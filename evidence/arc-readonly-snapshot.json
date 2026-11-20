@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-11-20T09:21:31.824Z",
+  "chainId": 5042002,
+  "vault": "0xe581BF3B5aE2A3B34d7eC08C3af5F914581368a2",
+  "owner": "0xd952691a2b11dBaadc4AdDbaD59597772302fa02",
+  "tau": [
+    600,
+    600,
+    600
+  ],
+  "memoryWindow": 1800,
+  "minPokeInterval": 60,
+  "active": true,
+  "entryPrice": "2000.0",
+  "stopPrice": "1960.0",
+  "transactionsSent": 0
+}

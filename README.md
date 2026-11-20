@@ -1,5 +1,9 @@
 # NeuroVault
 
+[Replay dashboard](https://diadefi.github.io/neurovault/index.html) · [Live Arc vault](https://diadefi.github.io/neurovault/index.html?mode=live) · [Current wallet control room](https://diadefi.github.io/neurovault/setup.html) · [Alternate demo runner](https://diadefi.github.io/neurovault/operate.html) · [5-minute pitch](https://diadefi.github.io/neurovault/docs/pitch.html) · [Backup video](https://diadefi.github.io/neurovault/demo/backup-replay.mp4)
+
+[![Contract and signing checks](https://github.com/diadefi/neurovault/actions/workflows/test.yml/badge.svg?branch=codex%2Farc-hackathon)](https://github.com/diadefi/neurovault/actions/workflows/test.yml)
+
 **Authorize your risk rules. On-chain spiking neurons manage the stop without a hot owner key.**
 
 UBC 2026 · **DeFi and Onchain Applications** · **Best use of Arc** · No bounties
@@ -13,7 +17,7 @@ NeuroVault is a testnet prototype of permissionless, rule-bound risk automation.
 
 ![Published browser replay](evidence/dashboard-published.jpg)
 
-## Deployment status
+## Deployed contracts
 
 Public mock contracts are deployed on **Arc Testnet**; see verified evidence in `deployments/arc-testnet.json`. Local addresses are not Arc addresses. Intended owner: `0xd952691a2b11dBaadc4AdDbaD59597772302fa02`.
 
@@ -23,8 +27,17 @@ Public mock contracts are deployed on **Arc Testnet**; see verified evidence in 
 | MockOracle (admin-set price) | Arc Testnet | [0x389135ad0Dcf828a5025335ed1861926fE8E035a](https://explorer.testnet.arc.io/address/0x389135ad0Dcf828a5025335ed1861926fE8E035a) |
 | MockPerp | Arc Testnet | [0x3EbF0b03a581927B3eB87e3E138f7048FefbD57f](https://explorer.testnet.arc.io/address/0x3EbF0b03a581927B3eB87e3E138f7048FefbD57f) |
 | MockPerpNeuroVault | Arc Testnet | [0xe581BF3B5aE2A3B34d7eC08C3af5F914581368a2](https://explorer.testnet.arc.io/address/0xe581BF3B5aE2A3B34d7eC08C3af5F914581368a2) |
+| GmxNeuroVault | GMX adapter, local tests | Integration tested against the repo’s GMX ABI interface; **not deployed** |
+| GMX ExchangeRouter / market integration | No live GMX network | Local recording-router tests against the repo’s GMX ABI interface; **not deployed** |
 
-The dashboard is published. The four Arc Testnet addresses below are verified against the current build. Download the wallet deployment manifest and verify it with `offchain/record-deployment.mjs` before submitting.
+The four Arc addresses above were checked against the current compiled runtime (accounting for immutables). This is not explorer source verification. GMX tests cover order encoding and units using a local recording router; they do not establish compatibility with a currently deployed GMX router or its asynchronous lifecycle.
+
+## Honest disclosures
+
+- **Mock venue and demo oracle on Arc:** prices are admin-controlled, mUSDC is freely mintable, and this is not a real ETH perpetual market. Native test USDC pays gas; it is separate from mock collateral.
+- **Demo params time-compressed ×12 in `operate.html` only:** τ 600 → 50 seconds and memory 1,800 → 150 seconds; intended poke spacing 60 → about 5 seconds, with a 4-second minimum and extra receipt latency. The already deployed vault and `setup.html` retain normal timing (600 / 1,800 / 60 seconds). Browser replay uses 60 simulated seconds per step; speed 10 means ten samples per wall-clock second, not ×12 parameter compression.
+- **Shoreline-1 signer is a stub.** MetaMask signs the demonstrated owner actions. The alternate runner stores a gas-paying keeper/oracle-admin key in browser storage; it is not the owner key, but it can set mock prices.
+- **Unaudited testnet code.** Tests and sampled fuzz paths are evidence, not a security audit or formal proof. Setup uses multiple owner transactions. Stop updates require callers and depend on oracle trust and sample timing.
 
 ## Problem and solution
 
@@ -100,6 +113,19 @@ Callers pay gas and receive no protocol reward in this prototype. A user-funded 
 
 Adaptive stops can survive some paths that cross a fixed 2% trail, but can also realize larger losses or give back more gains. Report the actual replay rather than general outperformance. **Safer delegation of authority, not price prediction.**
 
+## Results
+
+Reproduce with `python sim/evaluate.py`. This runs the existing `sim/snn_sim.py` model over **seeds 0–49**, each with 720 one-minute synthetic samples and a long position. The generated volatility burst occupies indices 240–329; “survived” means still open immediately after the last burst sample. Both strategies share prices, initial entry, the 10-basis-point minimum stop improvement, and settlement at the observed crossing price. The baseline is a **fixed-width 2% trailing stop**, not a static stop price. The evaluation uses uncompressed default parameters.
+
+| Strategy | Survived burst | Stopped by sample 720 | Mean exit price when stopped | Mean stop updates / path |
+|---|---:|---:|---:|---:|
+| SNN adaptive trail | 27 / 50 (54%) | 26 / 50 | $2,011.73 (26 exits) | 28.4 |
+| Fixed 2% trail | 10 / 50 (20%) | 40 / 50 | $2,034.26 (40 exits) | 28.6 |
+
+On these synthetic paths, it **survives shakeouts more often, exits lower when a widened stop hits**; this is a tradeoff, not price prediction or evidence of profitable trading. The exit averages use different stopped subsets and exclude positions still open. On the 26 matched seeds where both stopped, the SNN exit was lower in 16 cases, by $13.85 on average across all 26 pairs; it was not lower on every path. Stop updates exclude the initial order and total 1,420 vs 1,430. No fees, funding, slippage, liquidation or historical market data are modeled. These are descriptive results from one synthetic generator, not a market backtest.
+
+Raw evidence: [per-seed CSV](sim/out/evaluation.csv), [parameters and JSON](sim/out/evaluation.json). The JavaScript video uses its own seeded generator and a scripted burst at step 200; it is a separate demonstration, not one of these 50 Python paths.
+
 ## Run locally
 
 Requirements: Foundry, Solidity 0.8.24, Node 20+, Python 3.10+ and matplotlib for charts.
@@ -158,6 +184,9 @@ The keeper needs gas, not owner privileges. Replay mode additionally needs the o
 | `sim/` | Python model, parameters, trace and chart |
 | `tools/` | Artifact export and local commands |
 | `submission/` | Devpost copy and demo/pitch scripts |
+| `docs/pitch.html` | Six-slide finalist deck with speaker notes (press N) |
+| `demo/backup-replay.mp4` | About 2:30 of browser replay, H.264; no transactions |
+| `PROGRESS.md` | Completion evidence, exact links and morning checklist |
 | `evidence/` | Environment-labeled verification evidence |
 
 ## Next

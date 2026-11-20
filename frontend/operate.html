@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NeuroVault: run it on Arc testnet</title>
+<style>
+  :root { --bg:#0b0e14; --panel:#121722; --line:#1f2633; --text:#e6e9ef; --muted:#8a93a6; --ok:#3ecf8e; --bad:#ff5d5d; --warn:#f5c84c; --accent:#4c8dff;
+          --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; }
+  header { padding:16px 24px; border-bottom:1px solid var(--line); display:flex; gap:16px; align-items:baseline; flex-wrap:wrap; }
+  header h1 { margin:0; font-size:18px; }
+  header a { color:var(--accent); }
+  main { max-width:980px; margin:0 auto; padding:18px 24px 40px; display:grid; gap:14px; }
+  .step { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .step h2 { margin:0 0 4px; font-size:15px; display:flex; align-items:center; gap:10px; }
+  .step h2 .n { font:600 12px var(--mono); color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:1px 8px; }
+  .step.done h2 .n { color:var(--ok); border-color:#1f5c43; }
+  .step p { margin:4px 0 10px; color:var(--muted); }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  button { font:inherit; color:var(--text); background:#2a4c8f; border:1px solid #3a62b0; border-radius:8px; padding:7px 14px; cursor:pointer; }
+  button.ghost { background:#1a2130; border-color:var(--line); }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  input { font:12.5px var(--mono); color:var(--text); background:#1a2130; border:1px solid var(--line); border-radius:8px; padding:7px 10px; }
+  .kv { font:12.5px var(--mono); color:var(--muted); margin-top:6px; word-break:break-all; }
+  .kv b { color:var(--text); font-weight:500; }
+  .kv a { color:var(--accent); }
+  #log { font:12px var(--mono); background:#0e131c; border:1px solid var(--line); border-radius:10px; padding:10px; max-height:280px; overflow:auto; white-space:pre-wrap; }
+  .ok { color:var(--ok); } .bad { color:var(--bad); } .warn { color:var(--warn); }
+  .note { font-size:12.5px; color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>NeuroVault · run it on Arc testnet</h1>
+  <span class="note">Your wallet is the owner. A browser-held keeper key deploys, sets mock prices and pokes. It cannot withdraw from the vault.</span>
+  <a href="index.html">dashboard →</a>
+</header>
+<main>
+  <p class="note">Alternate runner for a separate test deployment. To operate the existing Arc vault, use <a href="setup.html">the current MetaMask control room</a>. Mock venue, mintable collateral and admin-controlled prices; unaudited testnet code. Shoreline-1 is a stub. This page creates a local keeper key on load but sends no transaction until an action is clicked.</p>
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>Connect your wallet (owner)</h2>
+    <p>Switches MetaMask to the configured network, adding it if needed. This address becomes the vault's immutable owner.</p>
+    <div class="row"><button id="connect">Connect wallet</button></div>
+    <div class="kv" id="ownerInfo"></div>
+  </div>
+
+  <div class="step" id="s2">
+    <h2><span class="n">2</span>Fund the burner (keeper + deployer)</h2>
+    <p>The burner key is generated and kept in this browser. It deploys the demo contracts and calls <code>poke()</code>. It cannot withdraw or change owner settings. As mock-oracle admin, it can change prices and trigger a stop. Its private key is stored in this browser; use test funds only.</p>
+    <div class="row"><input id="fundAmt" value="10" size="6" /> <span class="note">native gas units</span>
+      <button id="fund" disabled>Send from my wallet</button>
+      <button id="refresh" class="ghost">Refresh balances</button>
+      <button id="newBurner" class="ghost">New burner</button></div>
+    <div class="kv" id="burnerInfo"></div>
+  </div>
+
+  <div class="step" id="s3">
+    <h2><span class="n">3</span>Deploy the contracts (burner signs)</h2>
+    <p>MockUSDC, MockOracle (settable demo feed), MockPerp (venue) and MockPerpNeuroVault with <b>your address as owner</b>. Mints venue liquidity and 1,000 mUSDC of collateral into the vault.</p>
+    <div class="row"><button id="deploy" disabled>Deploy</button><button id="forget" class="ghost">Forget saved deployment</button></div>
+    <div class="kv" id="addrInfo"></div>
+  </div>
+
+  <div class="step" id="s4">
+    <h2><span class="n">4</span>Authorize setup (your wallet)</h2>
+    <p>Two owner transactions: sign the spiking-neuron parameters, then open a $5,000 long with 1,000 mUSDC collateral. Subsequent pokes need no owner signature. Owner actions still require your wallet.</p>
+    <div class="row"><button id="sign" disabled>1 · Sign params</button><button id="open" disabled>2 · Open long</button>
+      <button id="close" class="ghost" disabled>Close (owner)</button></div>
+    <div class="kv" id="ownerTx"></div>
+    <p class="note" style="margin-top:8px">This alternate runner time-compresses leak and memory ×12 (τ = 50 s, memory 150 s), targeting ~5 s between pokes with a 4 s minimum. Receipts add wall-clock delay. Thresholds and trails are unchanged. The existing published vault uses normal timing (τ = 600 s, memory 1,800 s, cooldown 60 s).</p>
+  </div>
+
+  <div class="step" id="s5">
+    <h2><span class="n">5</span>Run the market (burner pokes)</h2>
+    <p>The burner moves the demo oracle along a seeded price path (calm, then a volatility burst at step 40) and calls the permissionless <code>poke()</code> after each move.</p>
+    <div class="row"><button id="run" disabled>Start</button><button id="stop" class="ghost" disabled>Stop</button>
+      <button id="burst" class="ghost" disabled>Inject volatility</button>
+      <a id="dash" class="note" target="_blank" style="display:none">open live dashboard →</a></div>
+    <div class="kv" id="runInfo"></div>
+  </div>
+
+  <div id="log"></div>
+</main>
+
+<script src="vendor/ethers.umd.min.js"></script>
+<script src="contracts.js"></script>
+<script>
+"use strict";
+const C = window.NV_CONTRACTS, WAD = 10n ** 18n;
+const q = new URLSearchParams(location.search);
+const NET = {
+  rpc: q.get("rpc") || "https://rpc.testnet.arc.io",
+  chainId: BigInt(q.get("chainId") || "5042002"),
+  name: q.get("name") || "Arc Testnet",
+  symbol: q.get("symbol") || "USDC",
+  explorer: q.get("explorer") ?? "https://explorer.testnet.arc.io",
+};
+const DEMO_PARAMS = {
+  tau: [50, 50, 50], weight: [WAD, WAD, WAD],
+  theta: [WAD / 100n, 2n * WAD / 100n, 4n * WAD / 100n],
+  trailBps: [200, 350, 500, 800], memoryWindow: 150, minMoveBps: 10, minPokeInterval: 4, maxOracleAge: 3600,
+};
+const KEY = "nv-operate-" + NET.chainId;
+const $ = (id) => document.getElementById(id);
+const store = { get() { try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { return mem; } },
+                set(v) { mem = v; try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} } };
+let mem = {};
+let state = store.get();
+const rpc = new ethers.JsonRpcProvider(NET.rpc, Number(NET.chainId), { staticNetwork: true });
+let owner = null, ownerSigner = null, burner = null, burnerNM = null, running = false, burstLeft = 0;
+
+function log(msg, cls) { const d = document.createElement("div"); if (cls) d.className = cls;
+  d.textContent = new Date().toLocaleTimeString() + "  " + msg; $("log").prepend(d); }
+const link = (a, kind = "address") => NET.explorer ? `<a href="${NET.explorer}/${kind}/${a}" target="_blank">${a}</a>` : a;
+const fmt = (wei) => Number(ethers.formatEther(wei)).toFixed(4);
+const err = (e) => e?.revert?.name || e?.info?.error?.message || e?.shortMessage || e?.message || String(e);
+
+// ------------------------------------------------------------------ burner
+function loadBurner() {
+  if (!state.burnerKey) { state.burnerKey = ethers.Wallet.createRandom().privateKey; store.set(state); }
+  burner = new ethers.Wallet(state.burnerKey, rpc);
+  burnerNM = new ethers.NonceManager(burner);
+}
+async function refresh() {
+  const b = await rpc.getBalance(burner.address).catch(() => null);
+  $("burnerInfo").innerHTML = `burner <b>${burner.address}</b> · balance <b>${b === null ? "?" : fmt(b)}</b> ${NET.symbol}`;
+  if (owner) { const o = await rpc.getBalance(owner).catch(() => null);
+    $("ownerInfo").innerHTML = `owner <b>${owner}</b> · balance <b>${o === null ? "?" : fmt(o)}</b> ${NET.symbol}`; }
+  $("deploy").disabled = !(b && b > 0n) || !owner;
+  renderAddrs();
+  return b;
+}
+function renderAddrs() {
+  const a = state.addrs;
+  if (!a) { $("addrInfo").innerHTML = ""; return; }
+  $("addrInfo").innerHTML = Object.entries(a).filter(([k]) => k !== "block" && k !== "owner")
+    .map(([k, v]) => `${k}: ${link(v)}`).join("<br>") + `<br>deploy block: <b>${a.block}</b> · owner: <b>${a.owner}</b>`;
+  $("s3").classList.add("done");
+  const d = $("dash");
+  d.href = `index.html?mode=live&rpc=${encodeURIComponent(NET.rpc)}&vault=${a.MockPerpNeuroVault}&from=${a.block}`;
+  d.style.display = "";
+  const isOwner = owner && owner.toLowerCase() === a.owner.toLowerCase();
+  $("sign").disabled = !isOwner; $("open").disabled = !isOwner; $("close").disabled = !isOwner;
+  $("run").disabled = false; $("burst").disabled = false;
+}
+
+// ------------------------------------------------------------------ step 1
+$("connect").onclick = async () => {
+  if (!window.ethereum) { log("No injected wallet found. Install MetaMask or Rabby.", "bad"); return; }
+  try {
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+    const hex = ethers.toQuantity(NET.chainId);
+    try { await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: hex }] }); }
+    catch (e) {
+      if (e.code === 4902 || /Unrecognized|not added|4902/i.test(e.message || "")) {
+        await window.ethereum.request({ method: "wallet_addEthereumChain", params: [{ chainId: hex, chainName: NET.name,
+          nativeCurrency: { name: NET.symbol, symbol: NET.symbol, decimals: 18 }, rpcUrls: [NET.rpc],
+          blockExplorerUrls: NET.explorer ? [NET.explorer] : [] }] });
+      } else throw e;
+    }
+    const bp = new ethers.BrowserProvider(window.ethereum);
+    ownerSigner = await bp.getSigner(); owner = await ownerSigner.getAddress();
+    const net = await bp.getNetwork();
+    if (net.chainId !== NET.chainId) throw new Error(`wallet is on chain ${net.chainId}, expected ${NET.chainId}`);
+    $("s1").classList.add("done"); $("fund").disabled = false;
+    log(`connected owner ${owner} on chain ${net.chainId}`, "ok");
+    await refresh();
+  } catch (e) { log("connect failed: " + err(e), "bad"); }
+};
+
+// ------------------------------------------------------------------ step 2
+$("fund").onclick = async () => {
+  try {
+    const tx = await ownerSigner.sendTransaction({ to: burner.address, value: ethers.parseEther($("fundAmt").value) });
+    log("funding burner… " + tx.hash); await tx.wait(); log("burner funded", "ok"); $("s2").classList.add("done"); await refresh();
+  } catch (e) { log("fund failed: " + err(e), "bad"); }
+};
+$("refresh").onclick = refresh;
+$("newBurner").onclick = async () => { if (!confirm("Discard this burner key? Any balance on it is lost.")) return;
+  delete state.burnerKey; store.set(state); loadBurner(); await refresh(); log("new burner created"); };
+$("forget").onclick = () => { delete state.addrs; store.set(state); renderAddrs(); log("forgot saved deployment"); };
+
+// ------------------------------------------------------------------ step 3
+async function deployOne(name, args) {
+  const f = new ethers.ContractFactory(C[name].abi, C[name].bytecode, burnerNM);
+  const c = await f.deploy(...args); await c.waitForDeployment();
+  const a = await c.getAddress(); log(`${name} deployed at ${a}`, "ok"); return a;
+}
+$("deploy").onclick = async () => {
+  $("deploy").disabled = true;
+  try {
+    const block = await rpc.getBlockNumber();
+    const usdc = await deployOne("MockUSDC", []);
+    const oracle = await deployOne("MockOracle", [2000n * 10n ** 8n]);
+    const perp = await deployOne("MockPerp", [usdc, oracle]);
+    const vault = await deployOne("MockPerpNeuroVault", [owner, oracle, usdc, perp]);
+    const U = new ethers.Contract(usdc, C.MockUSDC.abi, burnerNM);
+    await (await U.mint(perp, 1_000_000n * 10n ** 6n)).wait();
+    await (await U.mint(vault, 1_000n * 10n ** 6n)).wait();
+    log("minted venue liquidity and vault collateral", "ok");
+    state.addrs = { MockUSDC: usdc, MockOracle: oracle, MockPerp: perp, MockPerpNeuroVault: vault, block, owner };
+    store.set(state); renderAddrs();
+  } catch (e) { log("deploy failed: " + err(e), "bad"); burnerNM.reset(); $("deploy").disabled = false; }
+};
+
+// ------------------------------------------------------------------ step 4
+const ownerVault = () => new ethers.Contract(state.addrs.MockPerpNeuroVault, C.MockPerpNeuroVault.abi, ownerSigner);
+$("sign").onclick = async () => {
+  try { const tx = await ownerVault().signParams(DEMO_PARAMS); log("signParams sent " + tx.hash); await tx.wait();
+    const h = await ownerVault().paramsHash(); $("ownerTx").innerHTML = `params hash <b>${h}</b>`; log("params signed", "ok");
+  } catch (e) { log("signParams failed: " + err(e), "bad"); }
+};
+$("open").onclick = async () => {
+  try { const tx = await ownerVault().openPosition(true, 5000n * WAD, 1000n * 10n ** 6n); log("openPosition sent " + tx.hash); await tx.wait();
+    const p = await ownerVault().position(); $("s4").classList.add("done");
+    $("ownerTx").innerHTML += `<br>position LONG · entry <b>$${Number(ethers.formatEther(p.entryPrice)).toFixed(2)}</b> · stop <b>$${Number(ethers.formatEther(p.stopPrice)).toFixed(2)}</b>`;
+    log("position opened; your wallet is done", "ok");
+  } catch (e) { log("openPosition failed: " + err(e), "bad"); }
+};
+$("close").onclick = async () => {
+  try { const tx = await ownerVault().closePosition(); await tx.wait(); log("closed by owner", "ok"); } catch (e) { log("close failed: " + err(e), "bad"); }
+};
+
+// ------------------------------------------------------------------ step 5
+let seed = 6, price = 2000, step = 0;
+function rng() { let s = seed = (seed + 0x6d2b79f5) >>> 0; let t = s;
+  t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
+const gauss = () => Math.sqrt(-2 * Math.log(rng() || 1e-12)) * Math.cos(2 * Math.PI * rng());
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+$("burst").onclick = () => { burstLeft = 90; log("volatility injected for 90 steps", "warn"); };
+$("stop").onclick = () => { running = false; };
+$("run").onclick = async () => {
+  if (running) return; running = true; $("run").disabled = true; $("stop").disabled = false;
+  const a = state.addrs;
+  const oracle = new ethers.Contract(a.MockOracle, C.MockOracle.abi, burnerNM);
+  const vault = new ethers.Contract(a.MockPerpNeuroVault, C.MockPerpNeuroVault.abi, burnerNM);
+  const iface = vault.interface;
+  try { const p = await vault.position(); if (!p.active) log("note: no open position yet; neurons still run, ratchet idle", "warn"); } catch {}
+  while (running) {
+    step++;
+    if (step === 40) { burstLeft = 90; log("scripted volatility burst begins", "warn"); }
+    const sigma = burstLeft > 0 ? 0.0035 : 0.0003, drift = burstLeft > 0 ? 0 : 0.00008;
+    if (burstLeft > 0) burstLeft--;
+    price *= Math.exp(drift + sigma * gauss());
+    try {
+      await (await oracle.setPrice(BigInt(Math.round(price * 1e8)))).wait();
+      const r = await (await vault.poke({ gasLimit: 800000 })).wait();
+      const notes = [];
+      for (const L of r.logs) { let ev; try { ev = iface.parseLog(L); } catch { continue; } if (!ev) continue;
+        if (ev.name === "Spike") notes.push(`spike n${ev.args.neuron}`);
+        if (ev.name === "RegimeChanged") notes.push(`regime R${ev.args.oldRegime}→R${ev.args.newRegime}`);
+        if (ev.name === "StopTightened") notes.push(`stop → $${Number(ethers.formatEther(ev.args.newStop)).toFixed(2)}`);
+        if (ev.name === "PositionClosed") notes.push(`POSITION CLOSED (byStop=${ev.args.byStop})`); }
+      $("runInfo").innerHTML = `step <b>${step}</b> · price <b>$${price.toFixed(2)}</b> · last poke ${link(r.hash, "tx")}`;
+      if (notes.length) log(`step ${step} $${price.toFixed(2)}: ${notes.join(", ")}`, notes.some((n) => n.includes("CLOSED")) ? "bad" : "");
+      if (notes.some((n) => n.includes("CLOSED"))) { running = false; log("stop hit; position settled back into the vault", "ok"); }
+    } catch (e) { log(`step ${step}: ${err(e)}`, "warn"); burnerNM.reset(); }
+    await sleep(5000);
+  }
+  $("run").disabled = false; $("stop").disabled = true;
+};
+
+// ------------------------------------------------------------------ boot
+loadBurner(); refresh(); renderAddrs();
+log(`network ${NET.name} (chain ${NET.chainId}) via ${NET.rpc}`);
+</script>
+</body>
+</html>
