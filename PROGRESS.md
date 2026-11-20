@@ -1,5 +1,13 @@
 # NeuroVault — overnight handoff
 
+## Deadline update — November 20, 11:29 AM CST
+
+- Restyled only the CSS blocks in `frontend/index.html` and `frontend/operate.html`: off-white/charcoal palette with one muted rust accent, system text, monospace values, flat borders, no glow or purple/neon accents. Non-CSS content, element IDs and scripts are byte-equivalent after newline normalization to branch baseline `b737a8e`. Both pages reloaded and were screenshotted with zero console/network errors. CSS work finished in under two minutes.
+- New video: [`demo/neurovault-submission-720p.mp4`](demo/neurovault-submission-720p.mp4), exactly **150 seconds**, **1280×720**, H.264, preset `veryfast`, **1,911,062 bytes**, silent with FFmpeg-burned captions. Five scenes follow the requested 20/20/80/20/10-second schedule. Replay at speed 5 captured calm prices, the step-200 burst, spikes and regime changes; sampled stop values never decreased. The actual 30-test count and multiple-setup-signature limitation are stated.
+- Recorded with Playwright `record_video`; all non-GET requests blocked, no wallet connection or transactions. Full MP4 decode passed; final frames from each scene visually inspected. Recording and encoding finished in under four minutes after the CSS check.
+- Tooling/evidence: `tools/record-submission.py`, `evidence/restyle-check.json`, `evidence/submission-video.json`, and `evidence/submission-video/`. The earlier backup remains unchanged.
+- `SendUserFile` is unavailable in this session; the local MP4 was provided as a direct file link. Public download after Pages publishes: https://diadefi.github.io/neurovault/demo/neurovault-submission-720p.mp4. Upload this file to the required YouTube/Drive destination and check judge access before noon.
+
 Prepared Friday, November 20, 2026 (America/Chicago). **No transactions sent during this work. No files in `src/` changed.** No new vault or trading features were added.
 
 ## Finished

@@ -5,30 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>NeuroVault: run it on Arc testnet</title>
 <style>
-  :root { --bg:#0b0e14; --panel:#121722; --line:#1f2633; --text:#e6e9ef; --muted:#8a93a6; --ok:#3ecf8e; --bad:#ff5d5d; --warn:#f5c84c; --accent:#4c8dff;
-          --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; }
-  header { padding:16px 24px; border-bottom:1px solid var(--line); display:flex; gap:16px; align-items:baseline; flex-wrap:wrap; }
-  header h1 { margin:0; font-size:18px; }
-  header a { color:var(--accent); }
-  main { max-width:980px; margin:0 auto; padding:18px 24px 40px; display:grid; gap:14px; }
-  .step { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
-  .step h2 { margin:0 0 4px; font-size:15px; display:flex; align-items:center; gap:10px; }
-  .step h2 .n { font:600 12px var(--mono); color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:1px 8px; }
-  .step.done h2 .n { color:var(--ok); border-color:#1f5c43; }
-  .step p { margin:4px 0 10px; color:var(--muted); }
-  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-  button { font:inherit; color:var(--text); background:#2a4c8f; border:1px solid #3a62b0; border-radius:8px; padding:7px 14px; cursor:pointer; }
-  button.ghost { background:#1a2130; border-color:var(--line); }
-  button:disabled { opacity:.45; cursor:not-allowed; }
-  input { font:12.5px var(--mono); color:var(--text); background:#1a2130; border:1px solid var(--line); border-radius:8px; padding:7px 10px; }
-  .kv { font:12.5px var(--mono); color:var(--muted); margin-top:6px; word-break:break-all; }
-  .kv b { color:var(--text); font-weight:500; }
-  .kv a { color:var(--accent); }
-  #log { font:12px var(--mono); background:#0e131c; border:1px solid var(--line); border-radius:10px; padding:10px; max-height:280px; overflow:auto; white-space:pre-wrap; }
-  .ok { color:var(--ok); } .bad { color:var(--bad); } .warn { color:var(--warn); }
-  .note { font-size:12.5px; color:var(--muted); }
+:root{--bg:#f4f2ee;--panel:#faf9f6;--line:#ccc8c0;--text:#262622;--muted:#68665f;--accent:#8c482f;--ok:#8c482f;--bad:#262622;--warn:#8c482f;--price:#33332f;--stop:#8c482f;--base:#96928a;--spike:#8c482f;--n0:#8c482f;--n1:#8c482f;--n2:#8c482f;--n3:#8c482f;--mono:ui-monospace,SFMono-Regular,Consolas,monospace;color-scheme:light}
+*{box-sizing:border-box;box-shadow:none!important;text-shadow:none!important;backdrop-filter:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;text-align:left}
+a{color:var(--accent);text-underline-offset:3px}header{display:flex;align-items:center;justify-content:flex-start;gap:20px;padding:12px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}header h1{font-size:19px;font-weight:650;letter-spacing:-.3px;margin:0}header .tag{display:none}
+button,input,select{font:inherit;border:1px solid var(--line);border-radius:2px;padding:6px 10px;background:var(--panel);color:var(--text)}button{cursor:pointer}button:hover{border-color:var(--text)}button:disabled{opacity:.45;cursor:not-allowed}button.primary,button.active{background:var(--accent);color:#fff;border-color:var(--accent)}button.warn{background:var(--panel);color:var(--accent);border-color:var(--accent)}input,select,code,.mono,.kv,.kpi .v,.kpi .s,.pill{font-family:var(--mono);font-variant-numeric:tabular-nums}input{max-width:100%;font-size:12px}button.ghost{background:var(--panel);color:var(--text)}h2{font-weight:600;letter-spacing:0;text-transform:none}.muted,.note{color:var(--muted)}.hide{display:none!important}.ok,.bad,.warn{color:var(--text)}
+
+header .note{font-size:12px;max-width:660px}main{max-width:1000px;margin:0;padding:16px 20px 40px;display:grid;gap:10px}.step{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:12px 0}.step h2{margin:0 0 6px;font-size:15px;display:flex;gap:10px;align-items:center}.step h2 .n{font:12px var(--mono);color:var(--muted);padding:0;border:0;border-radius:0}.step.done h2 .n{color:var(--accent)}.step p{margin:4px 0 10px;color:var(--muted);max-width:880px;font-size:13px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.kv{font-size:12px;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}.kv b{color:var(--text);font-weight:500}#log{font:12px/1.5 var(--mono);background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:12px 0;max-height:240px;overflow:auto;white-space:pre-wrap}.note{font-size:12px}main>.note{margin:0 0 6px;padding-bottom:12px;border-bottom:1px solid var(--line)}
 </style>
 </head>
 <body>

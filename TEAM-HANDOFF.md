@@ -2,6 +2,8 @@
 
 **Prepared November 20, 2026, America/Chicago. Team: Darshan and Sebastian.**
 
+**Deadline update:** a newer five-scene, 1280×720, 2:30 submission cut is available as [demo/neurovault-submission-720p.mp4](demo/neurovault-submission-720p.mp4) and at [the public download](https://diadefi.github.io/neurovault/demo/neurovault-submission-720p.mp4). It has burned-in captions, a neutral dashboard restyle, and no audio. Use this newer cut for the YouTube/Drive upload if you are not making a live recording; the original backup remains available.
+
 **Start here:** the mock stack is already deployed on Arc Testnet, the website is public, the README has the addresses and disclosures, CI passes, and a 2:30 backup video exists. Do not spend the remaining submission window redeploying an already working stack. The main remaining submission task is to put the demo on **YouTube or Google Drive**, verify judge access, and submit the final Devpost entry.
 
 This document combines the latest submission-guide text supplied by the team with the actual repository/deployment evidence. Event requirements below are from that supplied guide, not an independent organizer confirmation. Deployed-state snapshots have timestamps; they are not a claim that the position is still open now.

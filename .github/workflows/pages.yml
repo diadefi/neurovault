@@ -21,6 +21,7 @@ jobs:
           mkdir -p frontend/docs frontend/demo
           cp docs/pitch.html frontend/docs/pitch.html
           cp demo/backup-replay.mp4 frontend/demo/backup-replay.mp4
+          cp demo/neurovault-submission-720p.mp4 frontend/demo/neurovault-submission-720p.mp4
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
