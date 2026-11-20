@@ -9,6 +9,8 @@ NeuroVault is a testnet prototype of permissionless, rule-bound risk automation.
 
 **Scope:** `DeployMock` on **Arc Testnet**, chain **5042002**. Browser replay needs no wallet. GMX remains an experimental adapter tested with a local recording router, not a live deployment or production-ready integration. Shoreline-1 transport is a stub; the demo uses MetaMask.
 
+[Open dashboard](https://diadefi.github.io/neurovault/) · [MetaMask setup](https://diadefi.github.io/neurovault/setup.html) · [Source code](https://github.com/diadefi/neurovault)
+
 ## Deployment status
 
 Public-chain deployment is **pending funding and wallet signatures**. Local addresses are not Arc addresses. Intended owner: `0xd952691a2b11dBaadc4AdDbaD59597772302fa02`.
@@ -20,7 +22,7 @@ Public-chain deployment is **pending funding and wallet signatures**. Local addr
 | MockPerp | Arc Testnet | Pending deployment |
 | MockPerpNeuroVault | Arc Testnet | Pending deployment |
 
-The public dashboard link and actual contract addresses will be recorded after successful publication/deployment. Download the wallet deployment manifest and verify it with `offchain/record-deployment.mjs` before submitting.
+The dashboard is published. Actual public-chain contract addresses remain pending. Download the wallet deployment manifest and verify it with `offchain/record-deployment.mjs` before submitting.
 
 ## Problem and solution
 

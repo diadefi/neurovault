@@ -41,8 +41,8 @@ const BrowserVault=vm.runInNewContext("const BPS=10000n,WAD=10n**18n;"+model+";V
 const bp={...p,tau:p.tau.map(BigInt),trailBps:p.trailBps.map(BigInt),memoryWindow:BigInt(p.memoryWindow),minMoveBps:BigInt(p.minMoveBps)};
 const browserSim=new BrowserVault(bp,2000n*10n**18n,BigInt(start.timestamp));
 const rows=[];
-for(const price of [2010,2020,2030,2080,2110,2105,2150,2140,2130,2200,1800]) {
-  await provider.send("evm_increaseTime",[60]);
+for(const [price,dt] of [[2010,60],[2020,60],[2030,60],[2080,60],[2110,60],[2105,60],[2150,60],[2140,60],[2130,60],[2200,60],[2100,60],[2100,2000],[1800,60]]) {
+  await provider.send("evm_increaseTime",[dt]);
   await (await oracle.setPrice(BigInt(price)*10n**8n)).wait();
   const receipt=await (await vault.connect(keeper).poke({gasLimit:800000})).wait();
   const block=await provider.getBlock(receipt.blockNumber);

@@ -2,7 +2,7 @@
   "network": "isolated local Anvil, not Arc Testnet",
   "chainId": 31337,
   "solidity": "0.8.24",
-  "ticks": 11,
+  "ticks": 13,
   "checks": [
     "four-contract deployment",
     "owner configuration and open",
@@ -15,7 +15,7 @@
   "rows": [
     {
       "price": 2010,
-      "time": 1795165179,
+      "time": 1795166032,
       "stop": "1969800000000000000000",
       "active": true,
       "regime": 0,
@@ -24,11 +24,11 @@
         "5000000000000000",
         "5000000000000000"
       ],
-      "transactionHash": "0xbaed3f0771ba49a4d4a61be9b8aaa8882153079f80c2a4bb1f79c44d79991d8c"
+      "transactionHash": "0xdb915bd2c15d791a1a2e38609b5a87446491fd0461e6607bfcdadbfe269334d8"
     },
     {
       "price": 2020,
-      "time": 1795165239,
+      "time": 1795166092,
       "stop": "1979600000000000000000",
       "active": true,
       "regime": 0,
@@ -37,11 +37,11 @@
         "9520578923563997",
         "9520578923563997"
       ],
-      "transactionHash": "0x40e42089af96ff9b93823415af51adff9f54810879b3e7753f6c0fdc0f59b20a"
+      "transactionHash": "0x82aca8e92a635178f73130fb0cca996043e82053e89c435650b3f2b1b15111ac"
     },
     {
       "price": 2030,
-      "time": 1795165300,
+      "time": 1795166153,
       "stop": "1979600000000000000000",
       "active": true,
       "regime": 1,
@@ -50,11 +50,11 @@
         "13592472892376959",
         "13592472892376959"
       ],
-      "transactionHash": "0x9fb29e154c7eb101ba642609dbed8e56f4043f534ccf49337a3a4e8005023618"
+      "transactionHash": "0xd84eaab6e4b48c755d0d7beb5920c3908b5161855223ec7739cb7ecb5f62637c"
     },
     {
       "price": 2080,
-      "time": 1795165360,
+      "time": 1795166213,
       "stop": "1979600000000000000000",
       "active": true,
       "regime": 2,
@@ -63,11 +63,11 @@
         "0",
         "36987335410445690"
       ],
-      "transactionHash": "0x103b14b69f1e29a34ed4de5714beb013da3de26a04a6ee71c24f267cb3279ba0"
+      "transactionHash": "0x5d1104a82e940260f0f98efaa240a2fe0217a855628c0d4d7fc9ffa5018241f9"
     },
     {
       "price": 2110,
-      "time": 1795165420,
+      "time": 1795166273,
       "stop": "1979600000000000000000",
       "active": true,
       "regime": 3,
@@ -76,11 +76,11 @@
         "14423076923076923",
         "0"
       ],
-      "transactionHash": "0x1f7c55b301a3ecce06fd3c2a81dccb26230d6cacf2bfd1821afa5e37ba628234"
+      "transactionHash": "0x24402d625a84e408719f24cafa6dbeee82a6bf0fae71a3f6098960ba22a0730f"
     },
     {
       "price": 2105,
-      "time": 1795165480,
+      "time": 1795166333,
       "stop": "1979600000000000000000",
       "active": true,
       "regime": 3,
@@ -89,50 +89,50 @@
         "15481556358333608",
         "2369668246445497"
       ],
-      "transactionHash": "0xffbf326983035cac69a138bd845ad8a4c854c053d154916379cfd453a4aaf38f"
+      "transactionHash": "0x73cfce314d21b038c7e5a78fe5c272af2e870da30c0f3b7e416e7ab0fa2f00fc"
     },
     {
       "price": 2150,
-      "time": 1795165540,
+      "time": 1795166394,
       "stop": "1979600000000000000000",
       "active": true,
       "regime": 3,
       "potentials": [
         "0",
         "0",
-        "23531916069431125"
+        "23528657001563644"
       ],
-      "transactionHash": "0xd6d3d5e4f65b98f2e315c357f20da97c5abef4d14da2a6737075a6d3812f0faa"
+      "transactionHash": "0x02615b7bf127c3c3720dcc0945bd53a00646dc82f2a6e2d58fe684855d8f055f"
     },
     {
       "price": 2140,
-      "time": 1795165601,
+      "time": 1795166454,
       "stop": "1979600000000000000000",
       "active": true,
       "regime": 3,
       "potentials": [
         "4651162790697674",
         "4651162790697674",
-        "26011449691845442"
+        "26040850973937350"
       ],
-      "transactionHash": "0xb13bea48869d48f2e0275b2081a53a86d6a78cd9959e54c381d4fe2514341d6d"
+      "transactionHash": "0x2ffff785d8ccf2951c0567a4bed2a9a5fc16bf16c148ec008a4a2c49f16280a1"
     },
     {
       "price": 2130,
-      "time": 1795165661,
+      "time": 1795166514,
       "stop": "1979600000000000000000",
       "active": true,
       "regime": 3,
       "potentials": [
         "8901227005986840",
         "8901227005986840",
-        "28319669643393902"
+        "28346398081659272"
       ],
-      "transactionHash": "0xef6226c161feed802cfab02143121fbf39be9a5b02960d90fcb2c6cb7e7d9900"
+      "transactionHash": "0xf620b471445b4536ae042aa217f857bd7fb1f62337171ff2b42a6e489f7a5611"
     },
     {
       "price": 2200,
-      "time": 1795165721,
+      "time": 1795166574,
       "stop": "2024000000000000000000",
       "active": true,
       "regime": 3,
@@ -141,12 +141,38 @@
         "0",
         "0"
       ],
-      "transactionHash": "0x14b53700bf8d3f8d62735acfa00af8aaeca0478ec3fcbc0912e7f4d00941cdb7"
+      "transactionHash": "0xae8ee6d0a2bf901f68b972dbcbf55fb1116493851e8ef2caf2721f7500cab7ea"
+    },
+    {
+      "price": 2100,
+      "time": 1795166635,
+      "stop": "2024000000000000000000",
+      "active": true,
+      "regime": 3,
+      "potentials": [
+        "0",
+        "0",
+        "0"
+      ],
+      "transactionHash": "0x726483088ee71bb870e32230e165a4ba0b1610e587ff8cabcd50978f516e09f2"
+    },
+    {
+      "price": 2100,
+      "time": 1795168635,
+      "stop": "2156000000000000000000",
+      "active": false,
+      "regime": 0,
+      "potentials": [
+        "0",
+        "0",
+        "0"
+      ],
+      "transactionHash": "0x0b4f328bccc276adadfc293e37dc60ed5a128e03b7578d890f056499e50a86ad"
     },
     {
       "price": 1800,
-      "time": 1795165781,
-      "stop": "2024000000000000000000",
+      "time": 1795168695,
+      "stop": "2156000000000000000000",
       "active": false,
       "regime": 3,
       "potentials": [
@@ -154,7 +180,7 @@
         "0",
         "0"
       ],
-      "transactionHash": "0xe39245ed3b36b84f24250f609e8a3c769331dc3439750fd7bc0dfefad364f294"
+      "transactionHash": "0x554a5310a227cd4b32edd3fd37c42bc8833189d60f544ead85c0aec53c096528"
     }
   ]
 }

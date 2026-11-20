@@ -36,8 +36,8 @@ Multiple setup signatures; no literal one-signature setup. Mock oracle controlle
 
 ## Required links to finish
 
-- Public GitHub repository: populate after verified publication.
-- Working dashboard: populate after verified hosting.
+- Public GitHub repository: https://github.com/diadefi/neurovault
+- Working dashboard: https://diadefi.github.io/neurovault/
 - Four Arc contract addresses: from verified deployment manifest.
 - Accessible 2–3 minute YouTube/Google Drive video: still to record and upload.
 - Submission deadline in supplied brief: November 20, 2026, noon CST.

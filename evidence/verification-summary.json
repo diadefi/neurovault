@@ -1,0 +1,24 @@
+{
+  "checkedAtUTC": "2026-11-20T08:43:47.538105+00:00",
+  "compiler": "solc 0.8.24",
+  "foundry": "1.4.2",
+  "contracts": {
+    "passed": 30,
+    "failed": 0,
+    "longFuzzRuns": 256,
+    "shortFuzzRuns": 256
+  },
+  "nodeSignatureRegression": "passed",
+  "ownerCLIDryRun": "passed on local chain 31337",
+  "keeperReplay": "5 successful local pokes, no skipped calls",
+  "simulator": "executed and chart regenerated",
+  "browserQA": [
+    "published browser replay",
+    "local live contract data",
+    "Arc wallet setup and missing-wallet feedback"
+  ],
+  "githubChecks": "https://github.com/diadefi/neurovault/actions/runs/44704688104",
+  "githubPages": "https://github.com/diadefi/neurovault/actions/runs/44704707168",
+  "publicChainDeployment": "pending owner funding and wallet signatures",
+  "hardwareSigning": "stub; not verified"
+}
