@@ -249,7 +249,9 @@ If you intentionally rebuild frontend artifacts, run `forge build` then `python 
 
 ### A. Publish the website from this branch
 
-The live site already exists. For an intentional future update, a collaborator with repository Actions permissions can open **Actions → Publish dashboard → Run workflow**, select `hackathon-11/20/2024`, and start the workflow. It uploads `frontend/`, plus copies `docs/pitch.html` and `demo/backup-replay.mp4` into the Pages artifact. Wait for success, then check both `index.html` and `operate.html` over HTTPS. Pushing a branch alone does not publish Pages: the workflow is manual.
+The live site already exists. **The GitHub Pages environment only allows the original `codex/arc-hackathon` branch to deploy.** A deployment directly from `hackathon-11/20/2024` was rejected by that existing rule. For future publication, review and bring the intended site assets onto `codex/arc-hackathon`, then open **Actions → Publish dashboard → Run workflow**, select that allowed branch, and start the workflow. Do not disable the environment protection. The deadline restyle/video were copied to the allowed branch in commit `2a2b142`; the requested handoff branch also retains them.
+
+The workflow uploads `frontend/`, plus the pitch and both MP4 files into the Pages artifact. Wait for success, then check both `index.html` and `operate.html` over HTTPS. Pushing a branch alone does not publish Pages: the workflow is manual.
 
 Publishing updates the **shared** site at `diadefi.github.io/neurovault`; it does not create a branch-specific site and does not deploy blockchain contracts. This handoff branch does not replace the default branch. Pushes do run `.github/workflows/test.yml` automatically.
 

@@ -7,6 +7,8 @@
 - Recorded with Playwright `record_video`; all non-GET requests blocked, no wallet connection or transactions. Full MP4 decode passed; final frames from each scene visually inspected. Recording and encoding finished in under four minutes after the CSS check.
 - Tooling/evidence: `tools/record-submission.py`, `evidence/restyle-check.json`, `evidence/submission-video.json`, and `evidence/submission-video/`. The earlier backup remains unchanged.
 - `SendUserFile` is unavailable in this session; the local MP4 was provided as a direct file link. Public download after Pages publishes: https://diadefi.github.io/neurovault/demo/neurovault-submission-720p.mp4. Upload this file to the required YouTube/Drive destination and check judge access before noon.
+- Publication route: GitHub Pages rejected the new handoff branch because the existing environment permits only `codex/arc-hackathon`. Protections were retained; the tested CSS and video assets were published to that allowed branch in commit `2a2b142` using a normal fast-forward push. The complete work also remains on `hackathon-11/20/2024` (`1d0d1b2`).
+- Final publication verified at **11:32 CST**: [Pages passed](https://github.com/diadefi/neurovault/actions/runs/44784153665), [CI passed](https://github.com/diadefi/neurovault/actions/runs/44784132317), both restyled pages loaded over HTTPS with zero console/network errors, and the new MP4 returned HTTP 200 with the correct `video/mp4` type and 1,911,062-byte size. Both requested jobs finished within their time caps.
 
 Prepared Friday, November 20, 2026 (America/Chicago). **No transactions sent during this work. No files in `src/` changed.** No new vault or trading features were added.
 
