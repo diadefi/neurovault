@@ -5,9 +5,11 @@ const KEY = "neurovault:5042002:" + OWNER;
 const $ = id => document.getElementById(id);
 const A = window.NV_ARTIFACTS;
 let provider, signer, account, state = { chainId: Number(CHAIN), owner: OWNER, transactions: [] };
+let phase = "Ready";
 try { const saved = JSON.parse(localStorage.getItem(KEY)); if (saved) state = saved; } catch {}
 $("intendedOwner").textContent = OWNER;
 function say(s) { $("status").textContent = s; }
+function setPhase(s) { phase = s; say(s); }
 function note(s) { $("log").textContent = s + "\n" + $("log").textContent; }
 function save() { localStorage.setItem(KEY, JSON.stringify(state)); render(); }
 function render() {
@@ -81,7 +83,7 @@ async function deployOne(name, args) {
     if (r.status !== 1) { delete state.pending; save(); throw Error("Previous deployment reverted. Resume to retry."); }
   } else {
     const factory = new ethers.ContractFactory(A[name].abi, A[name].bytecode, signer);
-    say("Deploy " + name + ": review in MetaMask…");
+    setPhase("Deploy " + name + ": review in MetaMask…");
     const c = await factory.deploy(...args), tx = c.deploymentTransaction();
     state.pending = {name,hash:tx.hash,address:await c.getAddress()}; save();
     note("Deploy " + name + " submitted: " + tx.hash);
@@ -136,8 +138,9 @@ const actions = {
 };
 for (const [id,fn] of Object.entries(actions)) $(id).onclick = async () => {
   const buttons = [...document.querySelectorAll("button")]; buttons.forEach(b=>b.disabled=true);
+  phase = $(id).textContent.trim();
   try { await fn(); if(!["connect","deploy"].includes(id)) say("Done. Transaction evidence is below."); }
-  catch(e) { const msg=e.reason||e.shortMessage||e.message; say(msg); note("Action stopped: "+msg); }
+  catch(e) { const msg=window.NV_walletError(e); say(msg); note(phase + "\nAction stopped: " + msg); }
   finally { buttons.forEach(b=>b.disabled=false); }
 };
 $("import").onchange = async e => {
