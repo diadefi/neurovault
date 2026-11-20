@@ -39,8 +39,10 @@ Multiple setup signatures; no literal one-signature setup. Mock oracle controlle
 - Public GitHub repository: https://github.com/diadefi/neurovault
 - Working dashboard: https://diadefi.github.io/neurovault/
 - Arc vault: https://explorer.testnet.arc.io/address/0xe581BF3B5aE2A3B34d7eC08C3af5F914581368a2
-- All four addresses and receipts: https://github.com/diadefi/neurovault/blob/codex/arc-hackathon/deployments/arc-testnet.json
-- Accessible 2–3 minute YouTube/Google Drive video: still to record and upload.
+- All four addresses and receipts: https://github.com/diadefi/neurovault/blob/hackathon-11/20/2024/deployments/arc-testnet.json
+- Complete teammate handoff: https://github.com/diadefi/neurovault/blob/hackathon-11/20/2024/TEAM-HANDOFF.md
+- A 2:30 captioned browser-replay backup is ready at https://diadefi.github.io/neurovault/demo/backup-replay.mp4. It is silent and is not live-transaction evidence.
+- Required accessible 2–3 minute YouTube/Google Drive video link: **still to upload and add to Devpost**. Use unlisted YouTube or Drive “anyone with the link can view”; verify in an incognito window.
 - Submission deadline in supplied brief: November 20, 2026, noon CST.
 
 Do not submit pending addresses, local Anvil addresses as Arc evidence, or a claim that the video exists before it is uploaded.

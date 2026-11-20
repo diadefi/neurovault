@@ -1,8 +1,10 @@
 # NeuroVault
 
+**Teammates: start with the [complete handoff](TEAM-HANDOFF.md)** for the current deployment, clone/run instructions, video-upload requirements, submission checklist, and four-minute finalist pitch outline. This branch is `hackathon-11/20/2024` (requested label); the hackathon date is November 20, 2026.
+
 [Replay dashboard](https://diadefi.github.io/neurovault/index.html) · [Live Arc vault](https://diadefi.github.io/neurovault/index.html?mode=live) · [Current wallet control room](https://diadefi.github.io/neurovault/setup.html) · [Alternate demo runner](https://diadefi.github.io/neurovault/operate.html) · [5-minute pitch](https://diadefi.github.io/neurovault/docs/pitch.html) · [Backup video](https://diadefi.github.io/neurovault/demo/backup-replay.mp4)
 
-[![Contract and signing checks](https://github.com/diadefi/neurovault/actions/workflows/test.yml/badge.svg?branch=codex%2Farc-hackathon)](https://github.com/diadefi/neurovault/actions/workflows/test.yml)
+[![Contract and signing checks](https://github.com/diadefi/neurovault/actions/workflows/test.yml/badge.svg?branch=hackathon-11%2F20%2F2024)](https://github.com/diadefi/neurovault/actions/workflows/test.yml)
 
 **Authorize your risk rules. On-chain spiking neurons manage the stop without a hot owner key.**
 
