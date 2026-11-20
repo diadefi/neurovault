@@ -1,0 +1,14 @@
+[
+  {
+    "file": "frontend\\index.html",
+    "non_css_sha256": "8700ca0b3cce2a8c222890fe9b2537fd1798f0c3bde67ecde7248172a7ae11c3",
+    "only_css_changed": true,
+    "ids_and_scripts_unchanged": true
+  },
+  {
+    "file": "frontend\\operate.html",
+    "non_css_sha256": "e706d94ad90b234c08893d40014726d662acf754f72cbe04f4cd500ec754f46d",
+    "only_css_changed": true,
+    "ids_and_scripts_unchanged": true
+  }
+]

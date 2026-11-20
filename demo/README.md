@@ -1,5 +1,13 @@
 # Backup browser replay
 
+## Submission cut, 1280×720
+
+`neurovault-submission-720p.mp4` is the newer 2:30 cut: problem (0:00–0:20), idea (0:20–0:40), actual browser replay (0:40–2:00), invariants (2:00–2:20), and closing (2:20–2:30). It uses the neutral CSS restyle, Playwright `record_video` at 1280×720, and FFmpeg-burned captions with no audio. Replay runs at speed 5 so the calm/burst/stop sequence fits the 80-second demo segment. The copy states the actual 30-test count and qualifies the “sign once” vision: setup currently requires multiple signatures.
+
+Public download: <https://diadefi.github.io/neurovault/demo/neurovault-submission-720p.mp4>. Reproduction: `python tools/record-submission.py` with the same Playwright/imageio-ffmpeg dependencies below. This is browser simulation, not live transaction evidence. Upload the MP4 to the required YouTube/Drive destination and check judge access before submitting.
+
+## Original backup
+
 `backup-replay.mp4` is a 150-second, silent H.264 recording of the public `index.html` replay using Playwright. FFmpeg uses `libx264`, preset `veryfast`, CRF 21, `yuv420p`, and fast-start MP4 metadata. Recording-only captions explain what is visible; they do not change the model or the deployed app.
 
 - 0:00–0:12: introduction, replay paused at the initial position.

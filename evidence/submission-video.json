@@ -1,0 +1,216 @@
+{
+  "duration": 150.0,
+  "size": [
+    1280,
+    720
+  ],
+  "codec": "h264",
+  "audio": false,
+  "captions": "FFmpeg drawtext burned into frames",
+  "scenes": [
+    [
+      "problem",
+      20
+    ],
+    [
+      "idea",
+      20
+    ],
+    [
+      "dashboard",
+      80
+    ],
+    [
+      "invariants",
+      20
+    ],
+    [
+      "closing",
+      10
+    ]
+  ],
+  "consoleErrors": [],
+  "transactionsSent": 0,
+  "allNonGetRequestsBlocked": true,
+  "replaySpeed": 5,
+  "states": [
+    {
+      "elapsed": 0.0,
+      "step": 0,
+      "burst": false,
+      "regime": 0,
+      "stop": "1960000000000000000000",
+      "active": true,
+      "spikes": 0,
+      "trail": 200,
+      "price": "$2,000.00"
+    },
+    {
+      "elapsed": 5.01,
+      "step": 25,
+      "burst": false,
+      "regime": 0,
+      "stop": "1968360023270200000000",
+      "active": true,
+      "spikes": 0,
+      "trail": 200,
+      "price": "$2,009.66"
+    },
+    {
+      "elapsed": 10.09,
+      "step": 50,
+      "burst": false,
+      "regime": 0,
+      "stop": "1970763467948800000000",
+      "active": true,
+      "spikes": 0,
+      "trail": 200,
+      "price": "$2,011.40"
+    },
+    {
+      "elapsed": 15.09,
+      "step": 75,
+      "burst": false,
+      "regime": 0,
+      "stop": "1974775676638800000000",
+      "active": true,
+      "spikes": 0,
+      "trail": 200,
+      "price": "$2,015.09"
+    },
+    {
+      "elapsed": 20.02,
+      "step": 100,
+      "burst": false,
+      "regime": 0,
+      "stop": "1977070328793000000000",
+      "active": true,
+      "spikes": 0,
+      "trail": 200,
+      "price": "$2,016.23"
+    },
+    {
+      "elapsed": 25.04,
+      "step": 125,
+      "burst": false,
+      "regime": 0,
+      "stop": "1979804478107400000000",
+      "active": true,
+      "spikes": 0,
+      "trail": 200,
+      "price": "$2,021.32"
+    },
+    {
+      "elapsed": 30.0,
+      "step": 150,
+      "burst": false,
+      "regime": 0,
+      "stop": "1986796580059200000000",
+      "active": true,
+      "spikes": 0,
+      "trail": 200,
+      "price": "$2,027.23"
+    },
+    {
+      "elapsed": 35.1,
+      "step": 175,
+      "burst": false,
+      "regime": 0,
+      "stop": "1989279781087200000000",
+      "active": true,
+      "spikes": 0,
+      "trail": 200,
+      "price": "$2,031.15"
+    },
+    {
+      "elapsed": 40.05,
+      "step": 200,
+      "burst": false,
+      "regime": 0,
+      "stop": "1998414549609800000000",
+      "active": true,
+      "spikes": 0,
+      "trail": 200,
+      "price": "$2,040.40"
+    },
+    {
+      "elapsed": 45.0,
+      "step": 225,
+      "burst": true,
+      "regime": 2,
+      "stop": "2000640916598800000000",
+      "active": true,
+      "spikes": 7,
+      "trail": 500,
+      "price": "$2,094.30"
+    },
+    {
+      "elapsed": 50.1,
+      "step": 250,
+      "burst": true,
+      "regime": 2,
+      "stop": "2000640916598800000000",
+      "active": true,
+      "spikes": 14,
+      "trail": 500,
+      "price": "$2,061.30"
+    },
+    {
+      "elapsed": 55.08,
+      "step": 275,
+      "burst": true,
+      "regime": 2,
+      "stop": "2000640916598800000000",
+      "active": true,
+      "spikes": 17,
+      "trail": 500,
+      "price": "$2,048.65"
+    },
+    {
+      "elapsed": 60.01,
+      "step": 300,
+      "burst": true,
+      "regime": 2,
+      "stop": "2000640916598800000000",
+      "active": true,
+      "spikes": 22,
+      "trail": 500,
+      "price": "$2,053.77"
+    },
+    {
+      "elapsed": 65.04,
+      "step": 318,
+      "burst": true,
+      "regime": 0,
+      "stop": "2056147341340400000000",
+      "active": false,
+      "spikes": 22,
+      "trail": 200,
+      "price": "$2,054.49"
+    },
+    {
+      "elapsed": 70.03,
+      "step": 318,
+      "burst": true,
+      "regime": 0,
+      "stop": "2056147341340400000000",
+      "active": false,
+      "spikes": 22,
+      "trail": 200,
+      "price": "$2,054.49"
+    },
+    {
+      "elapsed": 75.06,
+      "step": 318,
+      "burst": true,
+      "regime": 0,
+      "stop": "2056147341340400000000",
+      "active": false,
+      "spikes": 22,
+      "trail": 200,
+      "price": "$2,054.49"
+    }
+  ],
+  "bytes": 1911062,
+  "sha256": "b32627ee5917ae42055c5ff60e137d13ce81b255754b271d1064d7651ded021b"
+}
