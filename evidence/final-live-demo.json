@@ -1,0 +1,79 @@
+{
+  "duration": 150.0,
+  "size": [
+    1280,
+    720
+  ],
+  "codec": "h264",
+  "audio": false,
+  "timeline": [
+    {
+      "scene": "problem",
+      "start": 0,
+      "end": 8,
+      "source": "problem.mp4",
+      "sourceStart": 0,
+      "sourceLength": 8,
+      "speed": 1.0
+    },
+    {
+      "scene": "idea",
+      "start": 8,
+      "end": 18,
+      "source": "idea.mp4",
+      "sourceStart": 0,
+      "sourceLength": 10,
+      "speed": 1.0
+    },
+    {
+      "scene": "real-deployment",
+      "start": 18,
+      "end": 52,
+      "source": "Screen Recording 2026-11-20 114340.mp4",
+      "sourceStart": 0,
+      "sourceLength": 68,
+      "speed": 2.0
+    },
+    {
+      "scene": "real-live-result",
+      "start": 52,
+      "end": 66,
+      "source": "Recording 2026-11-20 114503.mp4",
+      "sourceStart": 30.8,
+      "sourceLength": 14,
+      "speed": 1.0
+    },
+    {
+      "scene": "replay",
+      "start": 66,
+      "end": 126,
+      "source": "dashboard.mp4",
+      "sourceStart": 0,
+      "sourceLength": 80,
+      "speed": 1.3333333333333333
+    },
+    {
+      "scene": "invariants",
+      "start": 126,
+      "end": 140,
+      "source": "invariants.mp4",
+      "sourceStart": 0,
+      "sourceLength": 14,
+      "speed": 1.0
+    },
+    {
+      "scene": "closing",
+      "start": 140,
+      "end": 150,
+      "source": "closing.mp4",
+      "sourceStart": 0,
+      "sourceLength": 10,
+      "speed": 1.0
+    }
+  ],
+  "originalFilesUnmodified": true,
+  "sourceRecordingsOrder": "longer deployment recording, then shorter live-result recording",
+  "bytes": 4100303,
+  "sha256": "14d3cf5d719fc9c10e201a1f760a981f51ef70912c57f02f09677858c6a72624",
+  "notes": "Condensed edit. Waiting and later retry attempts excluded. Actual Arc footage and browser simulation labeled separately. No transactions sent by this edit."
+}

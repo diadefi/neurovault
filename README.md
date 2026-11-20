@@ -1,6 +1,6 @@
 # NeuroVault
 
-**Latest video:** [2:30 submission MP4, 1280×720, captioned](https://diadefi.github.io/neurovault/demo/neurovault-submission-720p.mp4). Browser simulation, no audio; upload to YouTube/Drive for submission.
+**Latest video:** [Final 2:30 MP4 with real deployment approvals, live result and replay](https://diadefi.github.io/neurovault/demo/neurovault-final-live-demo.mp4). Captioned, 1280×720, no audio; upload to YouTube/Drive for submission.
 
 [Replay dashboard](https://diadefi.github.io/neurovault/index.html) · [Live Arc vault](https://diadefi.github.io/neurovault/index.html?mode=live) · [Current wallet control room](https://diadefi.github.io/neurovault/setup.html) · [Alternate demo runner](https://diadefi.github.io/neurovault/operate.html) · [5-minute pitch](https://diadefi.github.io/neurovault/docs/pitch.html) · [Backup video](https://diadefi.github.io/neurovault/demo/backup-replay.mp4)
 
