@@ -1,0 +1,14 @@
+{
+  "sourceBaselineCommit": "bef2a3b",
+  "soliditySourceTree": "45dff5d41ca8751d9c4031d3744e1eefb0a03e91",
+  "solidityFilesChanged": 0,
+  "transactionsSent": 0,
+  "foundryTestsPassed": 30,
+  "nodeTestsPassed": 4,
+  "fuzzRuns": {
+    "long": 256,
+    "short": 256
+  },
+  "contractsJsMatchesCurrentArtifacts": true,
+  "videoSha256": "46a1248dc42973c55dd77fc6089de97e6c7efda04123e665a2ab3b22293af080"
+}

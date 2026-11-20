@@ -1,0 +1,11 @@
+{
+  "videoStatus": 200,
+  "videoType": [
+    "video/mp4"
+  ],
+  "videoBytes": [
+    "3052717"
+  ],
+  "badgeStatus": 200,
+  "badgePassing": true
+}

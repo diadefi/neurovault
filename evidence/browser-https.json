@@ -1,0 +1,115 @@
+{
+  "checked_at_utc": "2026-11-20T09:24:28.804114+00:00",
+  "mode": "HTTPS",
+  "wallet_connected": false,
+  "transactions_sent": 0,
+  "blocked_requests": [],
+  "pages": [
+    {
+      "url": "https://diadefi.github.io/neurovault/index.html",
+      "status": 200,
+      "title": "NeuroVault: keyless neuromorphic stops",
+      "console_errors": [],
+      "failed_requests": [],
+      "http_errors": [],
+      "replay_steps": 34
+    },
+    {
+      "url": "https://diadefi.github.io/neurovault/operate.html",
+      "status": 200,
+      "title": "NeuroVault: run it on Arc testnet",
+      "console_errors": [],
+      "failed_requests": [],
+      "http_errors": [],
+      "artifact_names": [
+        "MockUSDC",
+        "MockOracle",
+        "MockPerp",
+        "MockPerpNeuroVault",
+        "GmxNeuroVault"
+      ],
+      "network": {
+        "rpc": "https://rpc.testnet.arc.io",
+        "chainId": "5042002"
+      },
+      "wallet_connected": false
+    },
+    {
+      "url": "https://diadefi.github.io/neurovault/setup.html",
+      "status": 200,
+      "title": "NeuroVault \u00b7 Wallet setup",
+      "console_errors": [],
+      "failed_requests": [],
+      "http_errors": []
+    },
+    {
+      "url": "https://diadefi.github.io/neurovault/docs/pitch.html",
+      "status": 200,
+      "title": "NeuroVault \u00b7 Finalist pitch",
+      "console_errors": [],
+      "failed_requests": [],
+      "http_errors": [],
+      "slides": [
+        {
+          "id": "slide-1",
+          "scrollHeight": 900,
+          "viewportHeight": 900,
+          "overflowX": false,
+          "title": "Keep owner authorityoff the trading bot."
+        },
+        {
+          "id": "slide-2",
+          "scrollHeight": 900,
+          "viewportHeight": 900,
+          "overflowX": false,
+          "title": "Three neurons.One constrained action."
+        },
+        {
+          "id": "slide-3",
+          "scrollHeight": 900,
+          "viewportHeight": 900,
+          "overflowX": false,
+          "title": "A real deployment.A clearly labeled mock market."
+        },
+        {
+          "id": "slide-4",
+          "scrollHeight": 900,
+          "viewportHeight": 900,
+          "overflowX": false,
+          "title": "Bound the caller\u2019s authority."
+        },
+        {
+          "id": "slide-5",
+          "scrollHeight": 900,
+          "viewportHeight": 900,
+          "overflowX": false,
+          "title": "Different places to enforce policy"
+        },
+        {
+          "id": "slide-6",
+          "scrollHeight": 900,
+          "viewportHeight": 900,
+          "overflowX": false,
+          "title": "Safer automation.Then stronger market defenses."
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "url": "https://diadefi.github.io/neurovault/contracts.js",
+      "status": 200,
+      "bytes": 98572
+    },
+    {
+      "url": "https://diadefi.github.io/neurovault/abi.js",
+      "status": 200,
+      "bytes": 9514
+    },
+    {
+      "url": "https://diadefi.github.io/neurovault/vendor/ethers.umd.min.js",
+      "status": 200,
+      "bytes": 526551
+    }
+  ]
+}

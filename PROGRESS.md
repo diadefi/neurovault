@@ -5,7 +5,7 @@ Prepared Friday, November 20, 2026 (America/Chicago). **No transactions sent dur
 ## Finished
 
 - README: four deployed Arc addresses with explorer links; GMX marked local ABI-interface integration tests, not deployed; explicit mock/oracle, timing, signer and unaudited-code disclosures.
-- Published-runner preparation: recovered the existing `operate.html`, pointed its default RPC/explorer to the verified Arc endpoints, and generated `contracts.js` from the same current artifacts as `setup.html`. The existing `abi.js` and vendored ethers remain alongside it.
+- Published runner: recovered the existing `operate.html`, pointed its default RPC/explorer to the verified Arc endpoints, and generated `contracts.js` from the same current artifacts as `setup.html`. The existing `abi.js` and vendored ethers are published alongside it.
 - CI: moved the existing full check workflow to `.github/workflows/test.yml`, retaining `forge test` on push, pull request and manual dispatch, plus the Node signing/error checks. README links its real status badge.
 - Evaluation: ran the existing Python model for seeds **0–49**. SNN burst survival **27/50**, fixed 2% **10/50**; mean exits among stopped positions **$2,011.73 vs $2,034.26**; mean stop updates **28.4 vs 28.6**. Raw CSV/JSON and method are committed. These are synthetic descriptive results, not a market backtest.
 - Six-slide deck in `docs/pitch.html`: problem, mechanism, live-demo links and results, safety, agent-wallet comparison, roadmap. Arrow keys navigate; **N** toggles notes. Notes allocate exactly five minutes, including one minute for the demo. All six slides were visually reviewed at 1600×900 with no overflow.
@@ -14,7 +14,9 @@ Prepared Friday, November 20, 2026 (America/Chicago). **No transactions sent dur
 
 - Backup recording completed: `demo/backup-replay.mp4`, **150.0 seconds**, H.264, preset `veryfast`, 1600×1000, 3,052,717 bytes. Recorded the public replay at speed 10, including step 200; the model closed at step 318, and captions continue over that actual outcome. FFmpeg decoded every frame without errors; sampled frames were visually inspected. No console errors or non-GET requests were allowed by the recorder.
 
-Final HTTPS publication and CI verification will be recorded here when complete.
+- **Publication complete.** [Pages run 44710277179](https://github.com/diadefi/neurovault/actions/runs/44710277179) succeeded for content commit `b4efb6d`. Headless Chromium opened the public HTTPS dashboard, `operate.html`, `setup.html` and pitch at **09:24:28 UTC / 03:24:28 CST**: all HTTP 200, **zero console errors**, zero failed requests. `contracts.js`, `abi.js` and vendored ethers also returned 200. These are page-load checks, not wallet/transaction tests.
+- **CI passed.** [Test run 44710258119](https://github.com/diadefi/neurovault/actions/runs/44710258119) succeeded under the requested `test.yml`. The README badge was independently fetched and reports **passing**.
+- The public MP4 returns HTTP 200 as `video/mp4`, with the expected 3,052,717 bytes. The Solidity tree still matches the starting hash exactly. **All seven requested deliverables are complete; none was blocked.**
 
 ## Exact links
 
@@ -57,6 +59,10 @@ Final HTTPS publication and CI verification will be recorded here when complete.
 ## Verification files
 
 - `evidence/browser-local.json`: read-only local headless checks.
+- `evidence/browser-https.json`: final public HTTPS checks, including console/network results for each page and asset.
+- `evidence/public-media-check.json`: public MP4 headers and passing CI badge.
+- `evidence/backup-replay.json`: recording parameters, snapshots and H.264 validation.
+- `evidence/overnight-verification.json`: unchanged Solidity tree, test counts and video SHA-256.
 - `evidence/arc-readonly-snapshot.json`: timestamped Arc reads, no transactions.
 - `evidence/pitch-slide-1.png` through `pitch-slide-6.png`: rendered slides.
 - `sim/out/evaluation.json` and `.csv`: all 100 strategy/path observations.
