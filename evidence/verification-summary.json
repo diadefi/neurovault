@@ -19,6 +19,7 @@
   ],
   "githubChecks": "https://github.com/diadefi/neurovault/actions/runs/44704688104",
   "githubPages": "https://github.com/diadefi/neurovault/actions/runs/44704707168",
-  "publicChainDeployment": "pending owner funding and wallet signatures",
-  "hardwareSigning": "stub; not verified"
+  "publicChainDeployment": "Arc Testnet deployed; six successful receipts; runtime bytecode, owner and contract relationships verified",
+  "hardwareSigning": "stub; not verified",
+  "deploymentEvidence": "deployments/arc-testnet.json"
 }

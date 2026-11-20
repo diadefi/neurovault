@@ -15,16 +15,16 @@ NeuroVault is a testnet prototype of permissionless, rule-bound risk automation.
 
 ## Deployment status
 
-Public-chain deployment is **pending funding and wallet signatures**. Local addresses are not Arc addresses. Intended owner: `0xd952691a2b11dBaadc4AdDbaD59597772302fa02`.
+Public mock contracts are deployed on **Arc Testnet**; see verified evidence in `deployments/arc-testnet.json`. Local addresses are not Arc addresses. Intended owner: `0xd952691a2b11dBaadc4AdDbaD59597772302fa02`.
 
 | Contract | Network | Address |
 |---|---|---|
-| MockUSDC (mUSDC collateral) | Arc Testnet | Pending deployment |
-| MockOracle (admin-set price) | Arc Testnet | Pending deployment |
-| MockPerp | Arc Testnet | Pending deployment |
-| MockPerpNeuroVault | Arc Testnet | Pending deployment |
+| MockUSDC (mUSDC collateral) | Arc Testnet | [0x006445db90cbA7a84b03595cC59D27e2AEF025Db](https://explorer.testnet.arc.io/address/0x006445db90cbA7a84b03595cC59D27e2AEF025Db) |
+| MockOracle (admin-set price) | Arc Testnet | [0x389135ad0Dcf828a5025335ed1861926fE8E035a](https://explorer.testnet.arc.io/address/0x389135ad0Dcf828a5025335ed1861926fE8E035a) |
+| MockPerp | Arc Testnet | [0x3EbF0b03a581927B3eB87e3E138f7048FefbD57f](https://explorer.testnet.arc.io/address/0x3EbF0b03a581927B3eB87e3E138f7048FefbD57f) |
+| MockPerpNeuroVault | Arc Testnet | [0xe581BF3B5aE2A3B34d7eC08C3af5F914581368a2](https://explorer.testnet.arc.io/address/0xe581BF3B5aE2A3B34d7eC08C3af5F914581368a2) |
 
-The dashboard is published. Actual public-chain contract addresses remain pending. Download the wallet deployment manifest and verify it with `offchain/record-deployment.mjs` before submitting.
+The dashboard is published. The four Arc Testnet addresses below are verified against the current build. Download the wallet deployment manifest and verify it with `offchain/record-deployment.mjs` before submitting.
 
 ## Problem and solution
 

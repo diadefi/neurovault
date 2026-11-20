@@ -8,7 +8,7 @@ On-chain spiking neurons adapt a perpetual position's stop without giving a keep
 
 ## What did you build?
 
-NeuroVault combines a Solidity vault, a three-neuron leaky integrate-and-fire layer, a mock perpetual venue, a Python simulator, a permissionless keeper, a wallet-signing workflow, and a dashboard with browser replay and live on-chain views. Our target deployment is the mock suite on Arc Testnet. Replace this status sentence with confirmed deployment evidence before submission.
+NeuroVault combines a Solidity vault, a three-neuron leaky integrate-and-fire layer, a mock perpetual venue, a Python simulator, a permissionless keeper, a wallet-signing workflow, and a dashboard with browser replay and live on-chain views. The four-contract mock suite is deployed on Arc Testnet. All six deployment/funding receipts succeeded, and deployed runtime bytecode matches the current build.
 
 ## What problem does it solve?
 
@@ -38,7 +38,8 @@ Multiple setup signatures; no literal one-signature setup. Mock oracle controlle
 
 - Public GitHub repository: https://github.com/diadefi/neurovault
 - Working dashboard: https://diadefi.github.io/neurovault/
-- Four Arc contract addresses: from verified deployment manifest.
+- Arc vault: https://explorer.testnet.arc.io/address/0xe581BF3B5aE2A3B34d7eC08C3af5F914581368a2
+- All four addresses and receipts: https://github.com/diadefi/neurovault/blob/codex/arc-hackathon/deployments/arc-testnet.json
 - Accessible 2–3 minute YouTube/Google Drive video: still to record and upload.
 - Submission deadline in supplied brief: November 20, 2026, noon CST.
 

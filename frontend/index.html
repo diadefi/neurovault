@@ -149,6 +149,7 @@
 
 <script src="vendor/ethers.umd.min.js"></script>
 <script src="abi.js"></script>
+<script src="deployment.js"></script>
 <script>
 "use strict";
 // ---------------------------------------------------------------- constants
@@ -435,13 +436,13 @@ function setMode(m) {
   else { clearInterval(replay.timer); }
 }
 $("tabReplay").onclick = () => setMode("replay");
-$("tabLive").onclick = () => setMode("live");
+$("tabLive").onclick = () => { setMode("live"); if ($("vault").value.trim()) liveLoad(); };
 
 const q = new URLSearchParams(location.search);
 $("rpc").value = q.get("rpc") || "https://rpc.testnet.arc.io";
-$("vault").value = q.get("vault") || "";
-$("fromBlock").value = q.get("from") || "";
-if (q.get("mode") === "live") { setMode("live"); if (q.get("vault")) liveLoad(); } else setMode("replay");
+$("vault").value = q.get("vault") || window.NV_DEPLOYMENT?.MockPerpNeuroVault || "";
+$("fromBlock").value = q.get("from") || String(window.NV_DEPLOYMENT?.fromBlock || "");
+if (q.get("mode") === "live") { setMode("live"); if ($("vault").value.trim()) liveLoad(); } else setMode("replay");
 </script>
 </body>
 </html>

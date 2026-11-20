@@ -47,6 +47,7 @@ const pos=await v.position();output.positionActive=pos.active;
 mkdirSync(resolve(root,"deployments"),{recursive:true});
 writeFileSync(resolve(root,"deployments/arc-testnet.json"),JSON.stringify(output,null,2));
 writeFileSync(resolve(root,"frontend/deployment.json"),JSON.stringify(output,null,2));
+writeFileSync(resolve(root,"frontend/deployment.js"),"window.NV_DEPLOYMENT = " + JSON.stringify(output) + ";\n");
 const readme=resolve(root,"README.md");let md=readFileSync(readme,"utf8");
 md=md.replace("Public-chain deployment is **pending funding and wallet signatures**.","Public mock contracts are deployed on **Arc Testnet**; see verified evidence in `deployments/arc-testnet.json`.");
 for(const [name,address] of Object.entries(output)) if(sources[name]) {

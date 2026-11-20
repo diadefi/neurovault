@@ -1,0 +1,47 @@
+{
+  "network": "Arc Testnet",
+  "chainId": 5042002,
+  "rpc": "https://rpc.testnet.arc.io",
+  "owner": "0xd952691a2b11dBaadc4AdDbaD59597772302fa02",
+  "verifiedAt": "2026-11-20T09:04:24.908Z",
+  "fromBlock": 73163694,
+  "transactions": [
+    {
+      "hash": "0x121366990288dee2249e608b6c9f3b39dcfb15f4e157d8d476e96474400d3fb3",
+      "block": 73163484,
+      "feeUSDC": "0.011019911"
+    },
+    {
+      "hash": "0x1fb6844314a4008a790bbec2da2d6c5662ff7102bff122e3479945bab62d2613",
+      "block": 73163640,
+      "feeUSDC": "0.005756281"
+    },
+    {
+      "hash": "0x43322b0ed0f3e87bbfb17bab311e21155d37f04e4a452ddbeff64551fbaa811d",
+      "block": 73163665,
+      "feeUSDC": "0.016431809920956096"
+    },
+    {
+      "hash": "0xcc470096fb8b84a831111c2bcc44aa4779a03b51c014b7e57ef392d08960d523",
+      "block": 73163694,
+      "feeUSDC": "0.05849827229845248"
+    },
+    {
+      "hash": "0x6ba5ed6dcf7ea58a5bfd810cec3329b727e14176132b7e03e21f6cebd78c1636",
+      "block": 73163713,
+      "feeUSDC": "0.0017098"
+    },
+    {
+      "hash": "0x9fd77e5e48d355262265314ccb2e9562fb253512357435ffa9fd2315af1c43f7",
+      "block": 73163731,
+      "feeUSDC": "0.00110252"
+    }
+  ],
+  "MockUSDC": "0x006445db90cbA7a84b03595cC59D27e2AEF025Db",
+  "MockOracle": "0x389135ad0Dcf828a5025335ed1861926fE8E035a",
+  "MockPerp": "0x3EbF0b03a581927B3eB87e3E138f7048FefbD57f",
+  "MockPerpNeuroVault": "0xe581BF3B5aE2A3B34d7eC08C3af5F914581368a2",
+  "oracleAdmin": "0xd952691a2b11dBaadc4AdDbaD59597772302fa02",
+  "paramsHash": "0x7193069d7d6f0483f928d38110b776cfd484cd0182ab3a05e9e061776e230793",
+  "positionActive": false
+}
