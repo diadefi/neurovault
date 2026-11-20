@@ -11,6 +11,8 @@ NeuroVault is a testnet prototype of permissionless, rule-bound risk automation.
 
 [Open dashboard](https://diadefi.github.io/neurovault/) · [MetaMask setup](https://diadefi.github.io/neurovault/setup.html) · [Source code](https://github.com/diadefi/neurovault)
 
+![Published browser replay](evidence/dashboard-published.jpg)
+
 ## Deployment status
 
 Public-chain deployment is **pending funding and wallet signatures**. Local addresses are not Arc addresses. Intended owner: `0xd952691a2b11dBaadc4AdDbaD59597772302fa02`.
