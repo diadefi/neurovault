@@ -1,6 +1,6 @@
 # NeuroVault
 
-**Latest submission video:** [2:30 MP4, 1280×720, captioned](https://diadefi.github.io/neurovault/demo/neurovault-submission-720p.mp4). Browser simulation; no audio. Upload this file to YouTube or Drive and verify judge access.
+**Latest submission video:** [Final 2:30 MP4 with actual wallet/deployment footage and browser replay](https://diadefi.github.io/neurovault/demo/neurovault-final-live-demo.mp4). 1280×720, captioned, no audio. Upload this file to YouTube or Drive and verify judge access.
 
 **Teammates: start with the [complete handoff](TEAM-HANDOFF.md)** for the current deployment, clone/run instructions, video-upload requirements, submission checklist, and four-minute finalist pitch outline. This branch is `hackathon-11/20/2024` (requested label); the hackathon date is November 20, 2026.
 

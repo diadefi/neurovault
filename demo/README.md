@@ -1,5 +1,13 @@
 # Backup browser replay
 
+## Final cut with actual Arc footage — use this for submission
+
+[`neurovault-final-live-demo.mp4`](neurovault-final-live-demo.mp4) combines the user's November 20 recordings with the existing presentation/replay. Duration 150 seconds, 1280×720 H.264, burned-in captions, no audio. The longer 2:23 recording supplies actual deployment/setup approvals first (0–68 seconds condensed to 34 seconds at 2x); the shorter 45-second recording supplies the live stop result next. Waiting/retry portions are omitted. The replay is separately labeled as synthetic. Originals were not modified or committed.
+
+Timeline: problem 0:00–0:08; idea 0:08–0:18; actual deployment/setup 0:18–0:52; actual live result 0:52–1:06; browser replay 1:06–2:06; invariants 2:06–2:20; close 2:20–2:30. The actual footage shows a fresh deployment, separate from the original addresses retained in the README; retain its downloaded manifest for submission evidence.
+
+Download: <https://diadefi.github.io/neurovault/demo/neurovault-final-live-demo.mp4>. Edit details: `evidence/final-live-demo.json`; reproduction with the supplied recordings and previous scene intermediates: `tools/merge-live-demo.py`.
+
 ## Submission cut, 1280×720
 
 `neurovault-submission-720p.mp4` is the newer 2:30 cut: problem (0:00–0:20), idea (0:20–0:40), actual browser replay (0:40–2:00), invariants (2:00–2:20), and closing (2:20–2:30). It uses the neutral CSS restyle, Playwright `record_video` at 1280×720, and FFmpeg-burned captions with no audio. Replay runs at speed 5 so the calm/burst/stop sequence fits the 80-second demo segment. The copy states the actual 30-test count and qualifies the “sign once” vision: setup currently requires multiple signatures.
