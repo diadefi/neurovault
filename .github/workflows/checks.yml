@@ -1,0 +1,22 @@
+name: Contract and signing checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.4.2
+      - run: forge install foundry-rs/forge-std@v1.9.6 OpenZeppelin/openzeppelin-contracts@v5.1.0 --no-git
+      - run: forge test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: offchain/package-lock.json
+      - run: npm ci --prefix offchain
+      - run: npm test --prefix offchain
+      - run: node --check frontend/setup.js

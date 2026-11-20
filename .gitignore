@@ -1,0 +1,16 @@
+lib/
+/out/
+cache/
+broadcast/
+node_modules/
+.tools/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+pending-tx.json
+deployments/local.json
+*.log
+dist/

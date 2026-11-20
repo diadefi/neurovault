@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NeuroVault · Wallet setup</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b0e14;--panel:#121722;--line:#293449;--text:#e6e9ef;--muted:#a7b1c5;--green:#62e3ab}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,sans-serif}
+    main{max-width:1000px;margin:auto;padding:32px 24px 70px}a{color:#90b8ff}header{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+    h1{font-size:36px;letter-spacing:-1px;margin:14px 0}h2{font-size:21px;margin-top:0}.eyebrow{color:var(--green);font-size:14px;letter-spacing:.12em;text-transform:uppercase}
+    .muted{color:var(--muted)}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;margin:18px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid .panel{margin:0}
+    button,input,select{font:inherit;border-radius:8px;border:1px solid var(--line);padding:10px 14px;background:#1a263b;color:var(--text)}button{cursor:pointer}button:hover{border-color:#90b8ff}button:disabled{opacity:.5;cursor:wait}.primary{background:#2854ad}label{display:block;margin:14px 0 6px}input{width:100%;min-width:0}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    code{overflow-wrap:anywhere;font-size:14px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.6 ui-monospace,monospace;max-height:340px;overflow:auto}#status{color:var(--green)}.alert{border-left:3px solid #efbf62;padding-left:14px}.small{font-size:14px}.hide{display:none}@media(max-width:750px){.grid{grid-template-columns:1fr}main{padding:20px 14px}h1{font-size:28px}}
+  </style>
+</head>
+<body><main>
+  <header><div class="eyebrow">NeuroVault / Testnet control room</div><a href="index.html">Open dashboard</a></header>
+  <h1>Authorize the rules.<br>Keep control of the vault.</h1>
+  <p class="muted">Connect MetaMask to deploy the mock venue on Arc Testnet. Your wallet signs setup transactions; subsequent stop updates need no owner signature.</p>
+  <p class="alert">Demo assets only. The mock oracle is controlled by the deploying account and mUSDC is freely mintable. This is not a real ETH perpetual market. Shoreline-1 signing remains a stub.</p>
+  <section class="panel">
+    <h2>Wallet and network</h2>
+    <p>Intended owner: <code id="intendedOwner"></code></p>
+    <p class="small muted">Chain 5042002 · Arc Testnet · Test USDC pays transaction fees.</p>
+    <div class="actions"><button id="connect" class="primary">Connect MetaMask</button><a href="https://faucet.circle.com" target="_blank" rel="noopener">Get test USDC</a></div>
+    <p id="wallet" class="small muted">Wallet not connected.</p><p id="status" role="status" aria-live="polite">Ready for wallet connection.</p>
+  </section>
+  <div class="grid">
+    <section class="panel">
+      <h2>Deploy the mock contracts</h2>
+      <p class="muted">Four contract deployments and two mock-token mints. Each transaction is shown in your wallet. Progress is saved in this browser so you can resume.</p>
+      <div class="actions"><button id="deploy" class="primary">Deploy / resume</button><button id="export">Download addresses</button></div>
+      <p id="addresses" class="small muted">No deployment in this browser.</p>
+      <label for="import">Restore a downloaded deployment</label><input id="import" type="file" accept="application/json,.json">
+    </section>
+    <section class="panel">
+      <h2>Activate the vault</h2>
+      <p class="muted">Sign the default neuron settings, then open a demo long with $5,000 notional and 1,000 mUSDC collateral. Setup takes multiple signatures in this prototype.</p>
+      <div class="actions"><button id="params">Sign neuron settings</button><button id="open">Open demo long</button></div>
+      <div class="actions"><button id="close">Close position</button><button id="withdraw">Withdraw mUSDC to owner</button></div>
+      <p class="small muted">Withdrawal always goes to the immutable owner. No recipient can be entered.</p>
+    </section>
+  </div>
+  <section class="panel">
+    <h2>Show the automation</h2>
+    <p class="muted">For the deployed mock, the deployer sets the demo price. Anyone can then poke. The 60-second cooldown applies between pokes. For a fast presentation, use the browser replay.</p>
+    <label for="price">Mock ETH price (USD)</label><input id="price" type="number" min="1" step=".01" value="2010">
+    <div class="actions"><button id="setPrice">Set mock price</button><button id="poke">Poke vault</button><button id="sync">Sync venue settlement</button><a id="liveLink" href="index.html">View live dashboard</a></div>
+  </section>
+  <section class="panel"><h2>Transaction evidence</h2><pre id="log">Receipts will appear here. No private keys are requested or stored.</pre></section>
+</main><script src="vendor/ethers.umd.min.js"></script><script src="artifacts.js"></script><script src="setup.js"></script></body></html>

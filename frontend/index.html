@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NeuroVault: keyless neuromorphic stops</title>
+<style>
+  :root {
+    --bg: #0b0e14; --panel: #121722; --line: #1f2633; --text: #e6e9ef; --muted: #8a93a6;
+    --price: #4c8dff; --stop: #ff5d5d; --base: #6b7385; --spike: #f5c84c; --ok: #3ecf8e;
+    --n0: #5ad1ff; --n1: #f59e4c; --n2: #c77dff; --n3: #3ecf8e;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.45 system-ui, -apple-system, Segoe UI, sans-serif; }
+  a { color: #90b8ff; }
+  .mode-notice { margin: 0; padding: 12px 22px; border-bottom: 1px solid var(--line); color: #adb9cf; font-size: 14px; }
+  input { max-width: 100%; }
+  header { display: flex; align-items: center; gap: 16px; padding: 14px 22px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  header h1 { font-size: 18px; margin: 0; letter-spacing: .2px; }
+  header .tag { color: var(--muted); font-size: 13px; }
+  .tabs { margin-left: auto; display: flex; gap: 6px; }
+  button, input, select { font: inherit; color: var(--text); background: #1a2130; border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; }
+  button { cursor: pointer; }
+  button:hover { border-color: #33405a; }
+  button.primary { background: #2a4c8f; border-color: #3a62b0; }
+  button.warn { background: #5a3a12; border-color: #8a5a1c; }
+  button.active { background: #24324d; border-color: #3a62b0; }
+  input { font-family: var(--mono); font-size: 12.5px; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; padding: 16px 22px 30px; }
+  @media (max-width: 1000px) { main { grid-template-columns: 1fr; } }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .panel h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 10px; font-weight: 600; }
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  .controls label { color: var(--muted); font-size: 12px; }
+  .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+  @media (max-width: 800px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+  .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+  .kpi .k { color: var(--muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; }
+  .kpi .v { font: 600 20px var(--mono); margin-top: 2px; }
+  .kpi .s { color: var(--muted); font: 12px var(--mono); }
+  svg { display: block; width: 100%; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 6px; flex-wrap: wrap; }
+  .legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 5px; border-radius: 2px; }
+  .neuron { margin: 9px 0; }
+  .neuron .row { display: flex; justify-content: space-between; font: 12px var(--mono); color: var(--muted); }
+  .bar { position: relative; height: 12px; background: #0e131c; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin-top: 4px; }
+  .bar .fill { position: absolute; inset: 0 auto 0 0; width: 0; transition: width .15s; }
+  .bar .theta { position: absolute; top: -2px; bottom: -2px; left: 83.333%; width: 2px; background: var(--text); opacity: .7; }
+  .bar.fired { box-shadow: 0 0 0 1px var(--spike), 0 0 12px rgba(245, 200, 76, .45); }
+  .log { font: 12px var(--mono); max-height: 300px; overflow: auto; }
+  .log div { padding: 3px 0; border-bottom: 1px dashed #1a2130; color: var(--muted); }
+  .log b { color: var(--text); font-weight: 600; }
+  .inv { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+  .inv li { margin: 5px 0; }
+  .inv li::marker { color: var(--ok); }
+  .pill { font: 12px var(--mono); padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  .pill.ok { color: var(--ok); border-color: #1f5c43; }
+  .pill.bad { color: var(--stop); border-color: #6b2a2a; }
+  .stack { display: grid; gap: 16px; align-content: start; }
+  .hide { display: none !important; }
+  .mono { font-family: var(--mono); }
+  .muted { color: var(--muted); }
+  .regime { display: flex; gap: 6px; margin-top: 4px; }
+  .regime span { flex: 1; text-align: center; font: 11.5px var(--mono); padding: 5px 0; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); }
+  .regime span.on { background: #2a2210; border-color: var(--spike); color: var(--spike); }
+</style>
+</head>
+<body>
+<header>
+  <h1>NeuroVault</h1>
+  <span class="tag">On-chain spiking neurons. Adaptive stops. No hot owner key.</span>
+  <div class="tabs">
+    <button id="tabReplay" class="active">Replay (in-browser)</button>
+    <button id="tabLive">Live vault</button>
+    <a href="setup.html" style="align-self:center;font-size:14px">Wallet setup</a>
+  </div>
+</header>
+<p class="mode-notice" id="modeNotice">Browser simulation · synthetic prices · no transactions. Wider regimes never lower an existing long stop.</p>
+
+<main>
+  <section>
+    <div class="controls" id="replayControls">
+      <button id="play" class="primary">Pause</button>
+      <label>speed</label>
+      <select id="speed"><option>2</option><option>5</option><option selected>10</option><option>25</option><option>60</option></select>
+      <button id="burst" class="warn">Inject volatility</button>
+      <button id="reset">Reset</button>
+      <span class="muted" style="font-size:12px">Same integer math as the contract, run in your browser. Grey dashed line: fixed 2% trailing stop for comparison.</span>
+    </div>
+    <div class="controls hide" id="liveControls">
+      <input id="rpc" size="34" placeholder="RPC URL" aria-label="RPC URL" />
+      <input id="vault" size="44" placeholder="vault address 0x…" aria-label="Vault address" />
+      <input id="fromBlock" size="10" placeholder="from block" aria-label="Starting block" />
+      <button id="load" class="primary">Load</button>
+      <button id="poke">Poke (anyone)</button>
+      <span id="liveStatus" class="pill">idle</span>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="k">Price</div><div class="v" id="kPrice">-</div><div class="s" id="kPriceS">&nbsp;</div></div>
+      <div class="kpi"><div class="k">Stop</div><div class="v" id="kStop">-</div><div class="s" id="kStopS">&nbsp;</div></div>
+      <div class="kpi"><div class="k">Regime / trail</div><div class="v" id="kRegime">-</div><div class="s" id="kRegimeS">&nbsp;</div></div>
+      <div class="kpi"><div class="k">Spikes</div><div class="v" id="kSpikes">0</div><div class="s" id="kSpikesS">&nbsp;</div></div>
+      <div class="kpi"><div class="k">Position</div><div class="v" id="kPos">-</div><div class="s" id="kPosS">&nbsp;</div></div>
+    </div>
+
+    <div class="panel">
+      <h2>Price and ratcheted stop</h2>
+      <svg id="chart" viewBox="0 0 1000 340" preserveAspectRatio="none" style="height:340px"></svg>
+      <div class="legend">
+        <span><i style="background:var(--price)"></i>oracle price</span>
+        <span><i style="background:var(--stop)"></i>NeuroVault stop</span>
+        <span id="baseLegend"><i style="background:var(--base)"></i>fixed 2% trail (baseline)</span>
+        <span><i style="background:var(--spike)"></i>spike</span>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <h2>Spike raster</h2>
+      <svg id="raster" viewBox="0 0 1000 90" preserveAspectRatio="none" style="height:90px"></svg>
+    </div>
+  </section>
+
+  <aside class="stack">
+    <div class="panel">
+      <h2>Membrane potential (white line = firing threshold)</h2>
+      <div id="neurons"></div>
+      <h2 style="margin-top:14px">Volatility regime</h2>
+      <div class="regime" id="regimeStrip"></div>
+    </div>
+    <div class="panel">
+      <h2>Safety invariants (enforced in code)</h2>
+      <ul class="inv">
+        <li>Only the owner wallet can withdraw, and only to itself.</li>
+        <li>Only the owner can open, close or change params.</li>
+        <li>The stop can only tighten. A wider regime never loosens it.</li>
+        <li><span class="mono">poke()</span> takes no price input. Call timing affects sampling; oracle and owner settings determine the rules.</li>
+      </ul>
+      <p class="muted" style="font-size:14px">Mock deployment: admin-controlled prices and test tokens. Multiple setup signatures. Shoreline-1 is a stub; GMX is not live.</p>
+      <div class="muted mono" style="font-size:11.5px;margin-top:10px" id="hashLine">params hash: -</div>
+    </div>
+    <div class="panel">
+      <h2>Event log</h2>
+      <div class="log" id="log"></div>
+    </div>
+  </aside>
+</main>
+
+<script src="vendor/ethers.umd.min.js"></script>
+<script src="abi.js"></script>
+<script>
+"use strict";
+// ---------------------------------------------------------------- constants
+const WAD = 10n ** 18n, BPS = 10000n;
+const COLORS = ["var(--n0)", "var(--n1)", "var(--n2)", "var(--n3)", "#ff8fab", "#9ad0ec", "#e9c46a", "#90be6d"];
+const PARAMS = {
+  tau: [600n, 600n, 600n], weight: [WAD, WAD, WAD],
+  theta: [WAD / 100n, 2n * WAD / 100n, 4n * WAD / 100n],
+  trailBps: [200n, 350n, 500n, 800n], memoryWindow: 1800n, minMoveBps: 10n,
+};
+const $ = (id) => document.getElementById(id);
+const usd = (wad) => Number(wad) / 1e18;
+const f2 = (x) => x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// ---------------------------------------------------------------- LIF + ratchet (bit-exact port of NeuroVault.sol)
+class Vault {
+  constructor(p, entry, t0) {
+    this.p = p; const n = p.tau.length;
+    this.v = Array(n).fill(0n); this.last = Array(n).fill(0n); this.regime = 0;
+    this.lastPrice = entry; this.lastT = t0; this.extreme = entry; this.active = true;
+    this.stop = entry * (BPS - p.trailBps[0]) / BPS;
+  }
+  step(price, t) {
+    const p = this.p, dt = t - this.lastT, lp = this.lastPrice;
+    const x = price > lp ? (price - lp) * WAD / lp : (lp - price) * WAD / lp;
+    const spikes = []; let reg = 0;
+    for (let i = 0; i < p.tau.length; i++) {
+      let v = this.v[i] * p.tau[i] / (p.tau[i] + dt);
+      v += p.weight[i] * x / WAD;
+      if (v >= p.theta[i]) { v = 0n; this.last[i] = t; spikes.push(i); }
+      this.v[i] = v;
+      if (this.last[i] !== 0n && t - this.last[i] <= p.memoryWindow) reg = i + 1;
+    }
+    this.regime = reg; this.lastPrice = price; this.lastT = t;
+    if (this.active) this.ratchet(price);
+    return spikes;
+  }
+  ratchet(price) {
+    if (price <= this.stop) { this.active = false; return; }
+    const trail = this.p.trailBps[this.regime];
+    if (price > this.extreme) this.extreme = price;
+    const c = this.extreme * (BPS - trail) / BPS;
+    if (c <= this.stop || (c - this.stop) * BPS < this.p.minMoveBps * this.stop) return;
+    this.stop = c;
+    if (price <= this.stop) this.active = false;
+  }
+}
+
+// ---------------------------------------------------------------- shared view state
+let view = { series: [], theta: PARAMS.theta.map(usd), trail: PARAMS.trailBps.map(Number), regime: 0,
+             potentials: [0, 0, 0], fired: [], position: null, hash: "-", showBase: true };
+const logLines = [];
+function log(html) {
+  logLines.unshift(html); if (logLines.length > 80) logLines.pop();
+  $("log").innerHTML = logLines.map((l) => `<div>${l}</div>`).join("");
+}
+
+function render() {
+  const S = view.series;
+  // KPIs
+  const last = S[S.length - 1];
+  if (last) {
+    $("kPrice").textContent = "$" + f2(last.price);
+    const first = S[0].price, ch = (last.price / first - 1) * 100;
+    $("kPriceS").textContent = `${ch >= 0 ? "+" : ""}${ch.toFixed(2)}% since start`;
+    const closed = view.position && !view.position.active;
+    $("kStop").textContent = !closed && last.stop ? "$" + f2(last.stop) : "-";
+    const distance = last.stop ? Math.abs(last.price - last.stop) / last.price * 100 : 0;
+    $("kStopS").textContent = closed ? "position closed" : last.stop ? `${distance.toFixed(2)}% ${view.position?.isLong === false ? "above" : "below"} price` : "";
+  }
+  $("kRegime").textContent = `R${view.regime} / ${(view.trail[view.regime] / 100).toFixed(1)}%`;
+  $("kRegimeS").textContent = view.regime === 0 ? "calm" : `band ${view.regime - 1} firing`;
+  const nSp = S.reduce((a, r) => a + r.spikes.length, 0);
+  $("kSpikes").textContent = nSp;
+  $("kSpikesS").textContent = `${S.length} samples`;
+  if (view.position) {
+    $("kPos").textContent = view.position.active ? (view.position.isLong ? "LONG" : "SHORT") : "CLOSED";
+    $("kPos").style.color = view.position.active ? "var(--ok)" : "var(--stop)";
+    $("kPosS").textContent = view.position.detail || "";
+  }
+  $("hashLine").textContent = "params hash: " + view.hash;
+  $("baseLegend").classList.toggle("hide", !view.showBase);
+
+  // neurons
+  const nb = $("neurons");
+  if (nb.children.length !== view.theta.length) {
+    nb.innerHTML = view.theta.map((th, i) => `<div class="neuron"><div class="row"><span>neuron ${i}</span><span id="nv${i}"></span></div>
+      <div class="bar" id="nb${i}"><div class="fill" id="nf${i}" style="background:${COLORS[i]}"></div><div class="theta"></div></div></div>`).join("");
+    $("regimeStrip").innerHTML = view.trail.map((t, i) => `<span id="rs${i}">R${i} ${(t / 100).toFixed(1)}%</span>`).join("");
+  }
+  view.theta.forEach((th, i) => {
+    const v = view.potentials[i] || 0, frac = Math.min(v / th, 1.2);
+    $("nf" + i).style.width = (frac / 1.2 * 100) + "%";
+    $("nv" + i).textContent = `${(v * 100).toFixed(2)}% / θ ${(th * 100).toFixed(0)}%`;
+    $("nb" + i).classList.toggle("fired", view.fired.includes(i));
+  });
+  view.trail.forEach((_, i) => $("rs" + i).classList.toggle("on", i === view.regime));
+
+  drawChart(); drawRaster();
+}
+
+function drawChart() {
+  const S = view.series, W = 1000, H = 340, pad = 8;
+  if (S.length < 2) { $("chart").innerHTML = ""; return; }
+  let lo = Infinity, hi = -Infinity;
+  for (const r of S) for (const y of [r.price, r.stop, view.showBase ? r.base : null]) if (y) { lo = Math.min(lo, y); hi = Math.max(hi, y); }
+  const span = (hi - lo) || 1; lo -= span * .06; hi += span * .06;
+  const X = (i) => (i / (S.length - 1)) * W, Y = (y) => H - pad - ((y - lo) / (hi - lo)) * (H - 2 * pad);
+  const line = (k) => S.map((r, i) => r[k] ? `${X(i).toFixed(1)},${Y(r[k]).toFixed(1)}` : null).filter(Boolean).join(" ");
+  const step = (k) => { let d = "", prev = null; S.forEach((r, i) => { if (!r[k]) return; const x = X(i).toFixed(1), y = Y(r[k]).toFixed(1);
+    d += prev === null ? `M${x},${y}` : `H${x}V${y}`; prev = y; }); return d; };
+  let grid = "";
+  for (let g = 0; g <= 4; g++) { const yv = lo + (hi - lo) * g / 4, y = Y(yv);
+    grid += `<line x1="0" x2="${W}" y1="${y}" y2="${y}" stroke="#1f2633" stroke-width="1" vector-effect="non-scaling-stroke"/>
+             <text x="4" y="${Math.max(y - 3, 12)}" fill="#5c6579" font-size="11" font-family="monospace">${f2(yv)}</text>`; }
+  let spikes = "";
+  S.forEach((r, i) => { if (r.spikes.length) spikes += `<circle cx="${X(i)}" cy="${Y(r.price)}" r="3.2" fill="var(--spike)"/>`; });
+  $("chart").innerHTML = grid +
+    (view.showBase ? `<path d="${step("base")}" fill="none" stroke="var(--base)" stroke-width="1.5" stroke-dasharray="5 4" vector-effect="non-scaling-stroke"/>` : "") +
+    `<polyline points="${line("price")}" fill="none" stroke="var(--price)" stroke-width="1.6" vector-effect="non-scaling-stroke"/>` +
+    `<path d="${step("stop")}" fill="none" stroke="var(--stop)" stroke-width="2" vector-effect="non-scaling-stroke"/>` + spikes;
+}
+
+function drawRaster() {
+  const S = view.series, n = view.theta.length, W = 1000, H = 90;
+  if (S.length < 2) { $("raster").innerHTML = ""; return; }
+  const rowH = H / n; let out = "";
+  for (let i = 0; i < n; i++) out += `<text x="2" y="${(i + .7) * rowH}" fill="#5c6579" font-size="11" font-family="monospace">n${i}</text>`;
+  S.forEach((r, k) => r.spikes.forEach((i) => {
+    const x = 26 + (k / (S.length - 1)) * (W - 30);
+    out += `<line x1="${x}" x2="${x}" y1="${i * rowH + 4}" y2="${(i + 1) * rowH - 4}" stroke="${COLORS[i]}" stroke-width="2" vector-effect="non-scaling-stroke"/>`;
+  }));
+  $("raster").innerHTML = out;
+}
+
+// ---------------------------------------------------------------- replay mode
+const replay = { timer: null, playing: true, vault: null, base: null, t: 0n, k: 0, burstLeft: 0, price: 2000, seed: 6 };
+function rng() { let s = replay.seed = (replay.seed + 0x6d2b79f5) >>> 0; let t = s;
+  t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
+const gauss = () => Math.sqrt(-2 * Math.log(rng() || 1e-12)) * Math.cos(2 * Math.PI * rng());
+const toWad = (p) => BigInt(Math.round(p * 1e8)) * 10n ** 10n;
+
+function replayReset() {
+  Object.assign(replay, { t: 1700000000n, k: 0, burstLeft: 0, price: 2000, seed: 6, autoBurstDone: false });
+  const e = toWad(replay.price);
+  replay.vault = new Vault(PARAMS, e, replay.t);
+  replay.base = new Vault({ ...PARAMS, theta: PARAMS.theta.map(() => 10n ** 40n), trailBps: PARAMS.trailBps.map(() => 200n) }, e, replay.t);
+  view = { ...view, series: [{ price: 2000, stop: usd(replay.vault.stop), base: usd(replay.base.stop), spikes: [] }],
+           theta: PARAMS.theta.map(usd), trail: PARAMS.trailBps.map(Number), regime: 0, potentials: [0, 0, 0], fired: [],
+           position: { active: true, isLong: true, detail: "entry $2,000.00 · $5,000 size" }, showBase: true,
+           hash: ethers.keccak256(ethers.AbiCoder.defaultAbiCoder().encode(
+             ["tuple(uint32[],uint256[],uint256[],uint16[],uint32,uint16,uint32,uint32)"],
+             [[PARAMS.tau, PARAMS.weight, PARAMS.theta, PARAMS.trailBps, PARAMS.memoryWindow, PARAMS.minMoveBps, 60n, 86400n]])).slice(0, 18) + "… (default params)" };
+  logLines.length = 0; log("<b>replay</b> cold wallet signed params, opened LONG at $2,000.00");
+  render();
+}
+
+function replayTick() {
+  const sigma = replay.burstLeft > 0 ? 0.0035 : 0.0003, drift = replay.burstLeft > 0 ? 0 : 0.00008;
+  if (replay.k === 200 && !replay.autoBurstDone) { replay.autoBurstDone = true; replay.burstLeft = 90; log("<b style='color:#f59e4c'>volatility burst</b> (scripted at step 200)"); }
+  if (replay.burstLeft > 0) replay.burstLeft--;
+  replay.price *= Math.exp(drift + sigma * gauss());
+  replay.t += 60n; replay.k++;
+  const w = toWad(replay.price), V = replay.vault, B = replay.base;
+  const before = { stop: V.stop, regime: V.regime, active: V.active }, baseActive = B.active;
+  const spikes = V.step(w, replay.t); B.step(w, replay.t);
+  view.series.push({ price: replay.price, stop: before.active ? usd(V.stop) : null, base: baseActive ? usd(B.stop) : null, spikes });
+  if (view.series.length > 900) view.series.shift();
+  view.potentials = V.v.map(usd); view.fired = spikes; view.regime = V.regime;
+  spikes.forEach((i) => log(`<b style="color:var(--spike)">spike</b> neuron ${i} at $${f2(replay.price)}`));
+  if (V.regime !== before.regime) log(`<b>regime</b> R${before.regime} → R${V.regime}, trail ${(Number(PARAMS.trailBps[V.regime]) / 100).toFixed(1)}%`);
+  if (V.stop !== before.stop && V.active) log(`<b style="color:var(--stop)">stop</b> $${f2(usd(before.stop))} → $${f2(usd(V.stop))}`);
+  if (before.active && !V.active) { replay.playing = false; $("play").textContent = "Play"; log(`<b style="color:var(--stop)">STOP HIT</b> closed at $${f2(replay.price)}; replay paused`);
+    view.position = { active: false, isLong: true, detail: `exit $${f2(replay.price)}` }; }
+  if (baseActive && !B.active) log(`<span class="muted">baseline fixed-2% stop hit at $${f2(replay.price)}</span>`);
+  render();
+}
+
+function replayStart() {
+  clearInterval(replay.timer);
+  const sps = Number($("speed").value);
+  replay.timer = setInterval(() => { if (replay.playing) replayTick(); }, 1000 / sps);
+}
+
+$("play").onclick = () => { replay.playing = !replay.playing; $("play").textContent = replay.playing ? "Pause" : "Play"; };
+$("speed").onchange = replayStart;
+$("burst").onclick = () => { replay.burstLeft = 90; log("<b style='color:#f59e4c'>volatility injected</b> for 90 steps"); };
+$("reset").onclick = replayReset;
+
+// ---------------------------------------------------------------- live mode
+const live = { provider: null, vault: null, from: 0, cursor: 0, timer: null, pokes: [], stop: null, spikesByTx: {}, regimeByTx: {}, params: null };
+
+async function chunkedLogs(filter, from, to) {
+  const out = []; let step = 50000;
+  for (let a = from; a <= to;) {
+    const b = Math.min(a + step - 1, to);
+    try { out.push(...await live.provider.getLogs({ ...filter, fromBlock: a, toBlock: b })); a = b + 1; }
+    catch (e) { if (step <= 500) throw e; step = Math.floor(step / 4); }
+  }
+  return out;
+}
+
+async function liveLoad() {
+  clearInterval(live.timer); clearInterval(replay.timer);
+  const rpc = $("rpc").value.trim(), addr = $("vault").value.trim();
+  setStatus("loading…");
+  try {
+    live.provider = new ethers.JsonRpcProvider(rpc);
+    live.vault = new ethers.Contract(addr, window.NV_ABI, live.provider);
+    const head = await live.provider.getBlockNumber();
+    const fb = $("fromBlock").value.trim();
+    live.from = fb ? Number(fb) : Math.max(0, head - 200000);
+    if (!Number.isSafeInteger(live.from) || live.from < 0 || live.from > head) throw Error("Enter a starting block between 0 and the latest block.");
+    Object.assign(live, { cursor: live.from, pokes: [], stop: null, spikesByTx: {}, regimeByTx: {} });
+    const p = await live.vault.getParams();
+    if (!p.tau.length) throw Error("Vault deployed. Sign neuron settings on the Wallet setup page first.");
+    live.params = p;
+    view = { ...view, series: [], theta: p.theta.map(usd), trail: p.trailBps.map(Number), potentials: p.theta.map(() => 0),
+             fired: [], showBase: false, hash: (await live.vault.paramsHash()).slice(0, 18) + "…" };
+    logLines.length = 0; $("neurons").innerHTML = "";
+    const u = new URL(location); u.searchParams.set("mode", "live"); u.searchParams.set("rpc", rpc); u.searchParams.set("vault", addr);
+    if (fb) u.searchParams.set("from", fb); history.replaceState(null, "", u);
+    await livePoll();
+    live.timer = setInterval(() => livePoll().catch(e => setStatus(e.shortMessage || e.message, true)), 4000);
+  } catch (e) { setStatus("error: " + (e.shortMessage || e.message), true); console.error(e); }
+}
+
+async function livePoll() {
+  if (live.polling) return;
+  live.polling = true;
+  try {
+  const v = live.vault, iface = v.interface;
+  const head = await live.provider.getBlockNumber();
+  if (head >= live.cursor) {
+    const logs = await chunkedLogs({ address: v.target }, live.cursor, head);
+    live.cursor = head + 1;
+    logs.sort((a, b) => a.blockNumber - b.blockNumber || a.index - b.index);
+    for (const L of logs) {
+      let ev; try { ev = iface.parseLog(L); } catch { continue; } if (!ev) continue;
+      const a = ev.args;
+      if (ev.name === "PositionOpened") { live.stop = usd(a.stopPrice); view.series.push({price:usd(a.entryPrice),stop:live.stop,base:null,spikes:[]}); log(`<b>open</b> ${a.isLong ? "LONG" : "SHORT"} at $${f2(usd(a.entryPrice))}, stop $${f2(live.stop)}`); }
+      if (ev.name === "StopTightened") { live.stop = usd(a.newStop); const row = view.series.at(-1); if (row?.tx === L.transactionHash) row.stop = live.stop; log(`<b style="color:var(--stop)">stop</b> $${f2(usd(a.oldStop))} → $${f2(live.stop)}`); }
+      if (ev.name === "Spike") { (live.spikesByTx[L.transactionHash] ||= []).push(Number(a.neuron)); log(`<b style="color:var(--spike)">spike</b> neuron ${a.neuron} at $${f2(usd(a.price))}`); }
+      if (ev.name === "RegimeChanged") log(`<b>regime</b> R${a.oldRegime} → R${a.newRegime}, trail ${(Number(a.trailBps) / 100).toFixed(1)}%`);
+      if (ev.name === "PositionClosed") { log(`<b style="color:var(--stop)">${a.byStop ? "STOP HIT" : "closed by owner"}</b> at $${f2(usd(a.price))}`); live.stop = null; }
+      if (ev.name === "ParamsSigned") log(`<b>params signed</b> ${a.paramsHash.slice(0, 18)}… (${a.neurons} neurons)`);
+      if (ev.name === "Poked") {
+        const sp = live.spikesByTx[L.transactionHash] || [];
+        view.series.push({ price: usd(a.price), stop: live.stop, base: null, spikes: sp, tx: L.transactionHash });
+        view.potentials = a.potentials.map(usd); view.fired = sp;
+      }
+    }
+  }
+  const [pos, regime] = await Promise.all([v.position(), v.regime()]);
+  view.regime = Number(regime);
+  if (live.stop === null && pos.active) live.stop = usd(pos.stopPrice);
+  view.position = { active: pos.active, isLong: pos.isLong,
+    detail: pos.entryPrice > 0n ? `entry $${f2(usd(pos.entryPrice))} · $${f2(usd(pos.sizeUsd))} size` : "no position" };
+  setStatus(`block ${head} · ${view.series.length} samples`);
+  render();
+  } finally { live.polling = false; }
+}
+
+function setStatus(t, bad) { const s = $("liveStatus"); s.textContent = t; s.className = "pill " + (bad ? "bad" : "ok"); }
+
+$("load").onclick = liveLoad;
+$("poke").onclick = async () => {
+  if (!window.ethereum) { setStatus("no injected wallet: run the keeper instead", true); return; }
+  try {
+    if (!live.vault) throw Error("Load a vault before poking.");
+    const bp = new ethers.BrowserProvider(window.ethereum); await bp.send("eth_requestAccounts", []);
+    if ((await bp.getNetwork()).chainId !== (await live.provider.getNetwork()).chainId) throw Error("Wallet network does not match the loaded vault.");
+    const c = new ethers.Contract(live.vault.target, window.NV_ABI, await bp.getSigner());
+    setStatus("poking…"); await (await c.poke({ gasLimit: 800000 })).wait(); await livePoll();
+  } catch (e) { setStatus(e.revert?.name || e.shortMessage || e.message, true); }
+};
+
+// ---------------------------------------------------------------- tabs / boot
+function setMode(m) {
+  $("modeNotice").textContent = m === "replay" ? "Browser simulation · synthetic prices · no transactions. Wider regimes never lower an existing long stop." : "On-chain view · mock venue with admin-controlled prices and test tokens. Check the RPC network and contract address before signing.";
+  $("tabReplay").classList.toggle("active", m === "replay"); $("tabLive").classList.toggle("active", m === "live");
+  $("replayControls").classList.toggle("hide", m !== "replay"); $("liveControls").classList.toggle("hide", m !== "live");
+  if (m === "replay") { clearInterval(live.timer); $("neurons").innerHTML = ""; replayReset(); replayStart(); }
+  else { clearInterval(replay.timer); }
+}
+$("tabReplay").onclick = () => setMode("replay");
+$("tabLive").onclick = () => setMode("live");
+
+const q = new URLSearchParams(location.search);
+$("rpc").value = q.get("rpc") || "https://rpc.testnet.arc.io";
+$("vault").value = q.get("vault") || "";
+$("fromBlock").value = q.get("from") || "";
+if (q.get("mode") === "live") { setMode("live"); if (q.get("vault")) liveLoad(); } else setMode("replay");
+</script>
+</body>
+</html>
